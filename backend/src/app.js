@@ -3,6 +3,7 @@ const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const customerRoutes = require('./routes/customer.routes');
+const vehicleRoutes = require('./routes/Vehicle.routes');
 const authRoutes = require('./routes/auth.routes');
 const app = express();
 app.use(express.json());
@@ -13,9 +14,8 @@ app.use(cors({
 }));
 
 app.use("/api/auth",authRoutes);
-
-
 app.use("/api/customers", customerRoutes);
+app.use('/api/vehicles',vehicleRoutes);
 
 
 

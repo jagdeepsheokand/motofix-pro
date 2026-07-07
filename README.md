@@ -61,6 +61,7 @@ A full-stack garage management system built with the MERN stack that helps mecha
 - Postman
 - VS Code
 
+### Project Structure
 
 MotoFix-Pro/
 │
@@ -169,9 +170,9 @@ npm run dev
 - [x] Project Setup
 - [x] User Authentication
 - [x] Customer Management
-- [ ] Vehicle Management
-- [ ] Service Management
-- [ ] Job Cards
+- [x] Vehicle Management
+- [x] Service Management
+- [x] Job Cards
 - [ ] Invoice Generation
 - [ ] Dashboard & Analytics
 - [ ] Search & Filtering

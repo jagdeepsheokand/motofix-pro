@@ -29,6 +29,7 @@ const createRepairJob = async (req, res) => {
     const { 
       vehicle, 
       customerComplaint, 
+      customer,
       arrivalDate, 
       estimatedHours, 
       diagnosticNotes, 
@@ -37,12 +38,12 @@ const createRepairJob = async (req, res) => {
     } = req.body;
 
     // 1. Required fields
-    if (!vehicle || !customerComplaint) {
-      return res.status(400).json({
-        success: false,
-        message: 'Vehicle and customerComplaint are required'
-      });
-    }
+if (!vehicle || !customer || !customerComplaint) {
+  return res.status(400).json({
+    success: false,
+    message: 'Vehicle, customer, and customerComplaint are required'
+  });
+}
 
     // 2. Verify vehicle ownership (single query)
     const ownershipCheck = await verifyVehicleOwnership(vehicle, req.user.id);
@@ -67,6 +68,7 @@ const createRepairJob = async (req, res) => {
     // 4. Whitelist allowed fields (prevent mass assignment)
     const jobData = {
       vehicle,
+      customer, 
       customerComplaint,
       arrivalDate: arrivalDate || new Date(),
       estimatedHours: estimatedHours || 0,

@@ -207,7 +207,7 @@ const increaseStock = async (req, res) => {
     const part = await Inventory.findOneAndUpdate(
       { _id: id, createdBy: req.user.id },
       { $inc: { quantity } },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!part) {

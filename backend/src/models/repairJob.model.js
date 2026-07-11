@@ -10,6 +10,11 @@ const repairJobSchema = new mongoose.Schema({
     ref: 'Vehicle',
     required: true
   },
+  customer: {                    // ← NEW FIELD
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Customer',
+    required: true
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

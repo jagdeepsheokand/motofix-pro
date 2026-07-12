@@ -173,8 +173,8 @@ npm run dev
 - [x] Vehicle Management
 - [x] Service Management
 - [x] Job Cards
-- [ ] Invoice Generation
-- [ ] Dashboard & Analytics
+- [x] Invoice Generation
+- [x] Dashboard & Analytics
 - [ ] Search & Filtering
 - [ ] Deployment
 

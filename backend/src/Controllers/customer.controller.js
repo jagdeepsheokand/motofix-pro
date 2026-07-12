@@ -4,12 +4,13 @@ const createCustomer = async (req, res) => {
   try {
     const { name, phone, email, address } = req.body;
 
+    // ✅ FIXED: Use 'createdBy' instead of 'user'
     const customer = await Customer.create({
       name,
       phone,
       email,
       address,
-      user: req.user._id
+      createdBy: req.user._id  // ← Changed from 'user' to 'createdBy'
     });
 
     res.status(201).json({
@@ -27,8 +28,9 @@ const createCustomer = async (req, res) => {
 
 const getCustomers = async (req, res) => {
   try {
+    // ✅ FIXED: Use 'createdBy' instead of 'user'
     const customers = await Customer.find({
-      user: req.user._id
+      createdBy: req.user._id  // ← Changed from 'user' to 'createdBy'
     }).sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -43,11 +45,13 @@ const getCustomers = async (req, res) => {
     });
   }
 };
+
 const getCustomerById = async (req, res) => {
   try {
+    // ✅ FIXED: Use 'createdBy' instead of 'user'
     const customer = await Customer.findOne({
       _id: req.params.id,
-      user: req.user._id
+      createdBy: req.user._id  // ← Changed from 'user' to 'createdBy'
     });
 
     if (!customer) {
@@ -74,10 +78,11 @@ const updateCustomer = async (req, res) => {
   try {
     const { name, phone, email, address } = req.body;
 
+    // ✅ FIXED: Use 'createdBy' instead of 'user'
     const customer = await Customer.findOneAndUpdate(
       {
         _id: req.params.id,
-        user: req.user._id
+        createdBy: req.user._id  // ← Changed from 'user' to 'createdBy'
       },
       {
         name,
@@ -110,11 +115,13 @@ const updateCustomer = async (req, res) => {
     });
   }
 };
+
 const deleteCustomer = async (req, res) => {
   try {
+    // ✅ FIXED: Use 'createdBy' instead of 'user'
     const customer = await Customer.findOne({
       _id: req.params.id,
-      user: req.user._id
+      createdBy: req.user._id  // ← Changed from 'user' to 'createdBy'
     });
 
     if (!customer) {

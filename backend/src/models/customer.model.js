@@ -16,7 +16,7 @@ const CustomerSchema = new mongoose.Schema({
   address: {
     type: String
   },
-  user: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true

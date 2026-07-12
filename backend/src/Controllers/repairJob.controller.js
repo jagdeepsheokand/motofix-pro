@@ -17,7 +17,7 @@ const verifyVehicleOwnership = async (vehicleId, userId) => {
   }
 
   // Check if the customer belongs to the logged-in user
-  if (vehicle.owner.user?.toString() !== userId) {
+  if (vehicle.owner.createdBy?.toString() !== userId) {
     return { valid: false, message: 'You are not authorized for this vehicle' };
   }
 
@@ -32,6 +32,7 @@ const createRepairJob = async (req, res) => {
       customer,
       arrivalDate, 
       estimatedHours, 
+      status,
       diagnosticNotes, 
       assignedTo,
       jobNumber 
@@ -76,7 +77,7 @@ if (!vehicle || !customer || !customerComplaint) {
       assignedTo: assignedTo || null,
       createdBy: req.user.id,
       jobNumber: jobNumber || `MF-${Date.now().toString().slice(-8)}`,
-      status: 'PENDING',           // Force initial status
+      status: status,           // Force initial status
       totalPartsCost: 0,
       totalLaborCost: 0,
       amountPaid: 0,

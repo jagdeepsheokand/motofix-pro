@@ -8,6 +8,7 @@ const repairJobRoutes=require('./routes/repairJob.routes');
 const authRoutes = require('./routes/auth.routes');
 const inventoryRoutes= require('./routes/inventory.routes');
 const invoiceRoutes= require('./Routes/invoice.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -22,6 +23,7 @@ app.use('/api/vehicles',vehicleRoutes);
 app.use('/api/repair-jobs',repairJobRoutes);
 app.use('/api/inventory',inventoryRoutes);
 app.use('/api/invoice',invoiceRoutes);
+app.use('/api/dashboard',dashboardRoutes);
 
 
 

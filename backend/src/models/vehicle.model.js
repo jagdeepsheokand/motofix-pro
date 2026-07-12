@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
 
 const vehicleSchema = new mongoose.Schema({
+  // ✅ ADDED: Consistent with other models (Customer, RepairJob, Inventory, Invoice)
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
+  
+  // ✅ KEPT: This is the customer who owns the vehicle
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer', // Reference to Customer model
+    ref: 'Customer',
     required: true,
     index: true
   },
@@ -13,7 +22,7 @@ const vehicleSchema = new mongoose.Schema({
     required: true,
     trim: true,
     maxlength: 100,
-    uppercase:true
+    uppercase: true
   },
   
   model: {
@@ -21,7 +30,7 @@ const vehicleSchema = new mongoose.Schema({
     required: true,
     trim: true,
     maxlength: 100,
-    lowercase:true
+    lowercase: true
   },
   
   year: {
@@ -64,9 +73,11 @@ const vehicleSchema = new mongoose.Schema({
     maxlength: 1000
   }
 }, {
-  timestamps: true // Adds createdAt and updatedAt
+  timestamps: true
 });
 
+// ✅ ADDED: Compound indexes for common queries
+vehicleSchema.index({ createdBy: 1, owner: 1 });
 
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);

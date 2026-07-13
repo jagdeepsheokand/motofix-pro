@@ -1,22 +1,35 @@
+# =========================
 # Dependencies
+# =========================
 backend/node_modules/
 frontend/node_modules/
 
-# Environment variables
+# =========================
+# Environment Variables
+# =========================
 backend/.env
 frontend/.env
+.env
 *.env.local
 
-# Build outputs
+# =========================
+# Build Output
+# =========================
 frontend/dist/
 frontend/build/
 
+# =========================
 # Logs
+# =========================
 *.log
 npm-debug.log*
 yarn-debug.log*
+pnpm-debug.log*
 
-# Misc
-.DS_Store
-.env
+# =========================
+# IDE & OS Files
+# =========================
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db

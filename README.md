@@ -1,123 +1,196 @@
 # 🚗 MotoFix Pro
 
-A full-stack garage management system built with the MERN stack that helps mechanics and garage owners efficiently manage customers, vehicles, services, and billing.
+A full-stack **Garage Management System** built with the **MERN Stack** to help mechanics and garage owners efficiently manage customers, vehicles, repair jobs, inventory, invoices, and business analytics.
 
-![React](https://img.shields.io/badge/Frontend-React-61DAFB?logo=react)
-![Node.js](https://img.shields.io/badge/Backend-Node.js-339933?logo=node.js)
-![Express](https://img.shields.io/badge/Framework-Express-black?logo=express)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)
-![License](https://img.shields.io/badge/License-MIT-blue)
+> **Current Status:** ✅ Backend Complete | 🚧 Frontend In Progress
 
-## ✨ Features
+---
 
-### ✅ Authentication
-- User Registration
-- User Login
-- JWT Authentication
-- Protected Routes
-- Secure Password Hashing (bcrypt)
-- HttpOnly Cookie-based Authentication
-- Logout Functionality
+# ✨ Features
 
-### ✅ Customer Management
-- Create Customer
-- Get All Customers
-- Get Customer by ID
-- Update Customer Details
-- Delete Customer
-- User-specific Data Authorization
+## 🔐 Authentication
 
-### 🚧 Upcoming Features
-- Vehicle Management
-- Service Records
-- Job Cards
-- Invoicing System
-- Dashboard & Analytics
-- Search & Filtering
-- Role-based Access
+* User Registration
+* User Login
+* JWT Authentication
+* HttpOnly Cookie-based Authentication
+* Protected Routes
+* Secure Password Hashing (bcrypt)
+* User Profile
+* Logout
 
-## 🛠️ Tech Stack
+---
 
-### Frontend
-- React (Vite)
-- React Router
-- Axios
-- Tailwind CSS
+## 👥 Customer Management
 
-### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
+* Create Customer
+* View All Customers
+* View Customer by ID
+* Update Customer
+* Delete Customer
+* User-specific Ownership Authorization
 
-### Authentication
-- JSON Web Token (JWT)
-- bcrypt
-- HttpOnly Cookies
+---
 
-### Development Tools
-- Git
-- GitHub
-- Postman
-- VS Code
+## 🚗 Vehicle Management
 
-### Project Structure
+* Add Vehicle
+* View All Vehicles
+* View Vehicle Details
+* Update Vehicle
+* Delete Vehicle
+* Customer-Vehicle Relationship
+* Ownership Validation
 
+---
+
+## 🔧 Repair Job Management
+
+* Create Repair Job
+* View Repair Jobs
+* Update Job Status
+* Delete Repair Job
+* Diagnostic Notes
+* Estimated Delivery Date
+* Labor Cost
+* Parts Cost
+* Payment Tracking
+* Balance Due Calculation
+
+---
+
+## 📦 Inventory Management
+
+* Add Inventory Items
+* Update Inventory
+* Delete Inventory Items
+* Stock Increase/Decrease
+* Low Stock Alerts
+* Search Inventory
+* Filter Inventory
+* Sorting
+* Pagination
+* Ownership Authorization
+
+---
+
+## 🧾 Invoice Management
+
+* Automatic Invoice Number Generation
+* One Invoice per Repair Job
+* Automatic Total Calculation
+* Tax & Discount Support
+* Payment Status
+* Payment Method
+* Inventory Price Lookup
+
+---
+
+## 📊 Dashboard Analytics
+
+* Total Customers
+* Total Vehicles
+* Total Repair Jobs
+* Low Stock Count
+* Pending Payments
+* Monthly Revenue Aggregation
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+* React (Vite)
+* React Router
+* Axios
+* Tailwind CSS
+
+## Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+
+## Authentication
+
+* JWT
+* bcrypt
+* HttpOnly Cookies
+
+## Tools
+
+* Git
+* GitHub
+* Postman
+* VS Code
+
+---
+
+# 📁 Project Structure
+
+```text
 MotoFix-Pro/
 │
 ├── backend/
 │   ├── src/
-│   │   ├── Controllers/
-│   │   ├── db/
-│   │   ├── middlewares/
+│   │   ├── controllers/
+│   │   ├── routes/
 │   │   ├── models/
-│   │   ├── Routes/
-│   │   ├── Services/
-│   │   └── utils/
+│   │   ├── middlewares/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── db/
+│   │   └── app.js
 │   │
-│   ├── app.js
 │   ├── server.js
 │   ├── package.json
-│   └── package-lock.json
+│   └── .env
 │
 ├── frontend/
 │
 ├── .gitignore
 └── README.md
+```
 
+---
 
+# ⚙️ Installation
 
-## ⚙️ Installation
-
-### 1. Clone the Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/jagdeepsheokand/motofix-pro.git
 ```
 
-### 2. Navigate to the Project
-
 ```bash
 cd MotoFix-Pro
 ```
 
-### 3. Install Backend Dependencies
+---
+
+## Install Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-### 4. Install Frontend Dependencies
+---
+
+## Install Frontend
 
 ```bash
 cd ../frontend
 npm install
 ```
 
-## 🔐 Environment Variables
+---
 
-Create a `.env` file inside the `backend` directory and add:
+# 🔐 Environment Variables
+
+Create a `.env` file inside the **backend** folder.
 
 ```env
 PORT=5000
@@ -127,63 +200,129 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
 ```
 
-## ▶️ Running the Project
+---
 
-### Start the Backend
+# ▶️ Run the Project
+
+## Backend
 
 ```bash
 cd backend
 npm run dev
 ```
 
-### Start the Frontend
+## Frontend
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-## 📡 API Endpoints
+---
 
-### Authentication
+# 📡 API Modules
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register a new user |
-| POST | `/api/auth/login` | Login user |
-| POST | `/api/auth/logout` | Logout user |
-| GET | `/api/auth/profile` | Get logged-in user profile |
+## Authentication
 
-### Customers
+* POST `/api/auth/register`
+* POST `/api/auth/login`
+* POST `/api/auth/logout`
+* GET `/api/auth/profile`
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/customers` | Create a customer |
-| GET | `/api/customers` | Get all customers |
-| GET | `/api/customers/:id` | Get customer by ID |
-| PUT | `/api/customers/:id` | Update customer |
-| DELETE | `/api/customers/:id` | Delete customer |
+## Customers
 
+* POST `/api/customers`
+* GET `/api/customers`
+* GET `/api/customers/:id`
+* PUT `/api/customers/:id`
+* DELETE `/api/customers/:id`
 
-## 🗺️ Project Roadmap
+## Vehicles
 
-- [x] Project Setup
-- [x] User Authentication
-- [x] Customer Management
-- [x] Vehicle Management
-- [x] Service Management
-- [x] Job Cards
-- [x] Invoice Generation
-- [x] Dashboard & Analytics
-- [ ] Search & Filtering
-- [ ] Deployment
+* POST `/api/vehicles`
+* GET `/api/vehicles`
+* GET `/api/vehicles/:id`
+* PUT `/api/vehicles/:id`
+* DELETE `/api/vehicles/:id`
 
-## 👨‍💻 Author
+## Repair Jobs
+
+* POST `/api/repair-jobs`
+* GET `/api/repair-jobs`
+* GET `/api/repair-jobs/:id`
+* PUT `/api/repair-jobs/:id`
+* DELETE `/api/repair-jobs/:id`
+
+## Inventory
+
+* POST `/api/inventory`
+* GET `/api/inventory`
+* GET `/api/inventory/:id`
+* PUT `/api/inventory/:id`
+* DELETE `/api/inventory/:id`
+* PATCH `/api/inventory/:id/stock`
+
+## Invoices
+
+* POST `/api/invoices`
+* GET `/api/invoices`
+* GET `/api/invoices/:id`
+* PUT `/api/invoices/:id`
+* DELETE `/api/invoices/:id`
+
+## Dashboard
+
+* GET `/api/dashboard`
+
+---
+
+# 📈 Current Progress
+
+## ✅ Backend
+
+* Authentication
+* Customer Management
+* Vehicle Management
+* Repair Job Management
+* Inventory Management
+* Invoice System
+* Dashboard Analytics
+
+## 🚧 Frontend
+
+* Authentication UI
+* Dashboard
+* Customer Module
+* Vehicle Module
+* Repair Job Module
+* Inventory Module
+* Invoice Module
+
+---
+
+# 🚀 Future Enhancements
+
+* Role-based Access Control
+* Inventory Transaction History
+* PDF Invoice Generation
+* Image Uploads
+* Email Notifications
+* SMS Notifications
+* Appointment Booking
+* Real-time Updates (Socket.IO)
+* Online Payments
+* Advanced Reporting
+
+---
+
+# 👨‍💻 Author
 
 **Jagdeep Sheokand**
 
-- GitHub: https://github.com/jagdeepsheokand
+GitHub: https://github.com/jagdeepsheokand
 
-## 📄 License
+---
 
-This project is currently under development.
+# 📄 License
+
+This project is licensed under the MIT License.

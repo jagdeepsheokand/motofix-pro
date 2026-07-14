@@ -44,6 +44,39 @@ function AuthProvider({ children }) {
       throw error; // Let Login component handle the error
     }
   };
+  //Register
+const register = async (formData) => {
+    try {
+      console.log("📝 Registering new user...");
+      
+      const response = await api.post("/auth/register", formData);
+      
+      console.log("✅ Registration successful:", response.data);
+      return response;
+    } catch (error) {
+      console.error("Registration failed:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+
+
+  // Logout function
+  const logout = async () => {
+    try {
+      console.log("🔄 Logging out...");
+
+      const response = await api.post("/auth/logout");   
+
+      // Clear local user state
+      setUser(null);
+
+      console.log("✅ Logged out successfully:", response.data);
+      return response;
+    } catch (error) {
+      console.error("Logout failed:", error.response?.data || error.message);
+      throw error;
+    }
+  };
 
   const value = {
     user,
@@ -51,7 +84,8 @@ function AuthProvider({ children }) {
     loading,
     setLoading,
     checkAuth,
-    login, // ← Expose login function
+    login,
+    logout,        // ← Exposed here
   };
 
   return (

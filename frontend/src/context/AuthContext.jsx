@@ -85,7 +85,8 @@ const register = async (formData) => {
     setLoading,
     checkAuth,
     login,
-    logout,        // ← Exposed here
+    logout,  
+    register      
   };
 
   return (

@@ -1,6 +1,8 @@
+// pages/Dashboard.jsx
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import StatCard from "../components/dashboard/StatCard";
+import LowStockCard from "../components/dashboard/LowStockCard"; 
 import dashboardService from "../services/dashboardService";
 
 function Dashboard() {
@@ -92,8 +94,8 @@ function Dashboard() {
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
       
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      {/* Stats Grid - First row with cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
         {cards.map((card, index) => (
           <StatCard 
             key={index} 
@@ -101,6 +103,16 @@ function Dashboard() {
             value={card.value} 
           />
         ))}
+      </div>
+
+      {/* ✅ Second row with Low Stock Card (full width) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          {/* You can add other cards here like Recent Activity, Top Customers, etc. */}
+        </div>
+        <div className="lg:col-span-1">
+          <LowStockCard />
+        </div>
       </div>
     </div>
   );

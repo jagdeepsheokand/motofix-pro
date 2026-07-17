@@ -12,7 +12,13 @@ import CreateVehicle from "./pages/CreateVehicle";     // ← Add this
 import EditVehicle from "./pages/EditVehicle";         // ← Add this
 
 import RepairJobs from "./pages/RepairJobs";
+import CreateRepairJob from "./pages/CreateRepairJob";
+import EditRepairJob from "./pages/EditRepairJob";
+
 import Inventory from "./pages/Inventory";
+import CreateInventoryItem from "./pages/CreateInventoryItem";
+import EditInventoryItem from "./pages/EditInventoryItem";
+
 import Invoices from "./pages/Invoices";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -38,7 +44,14 @@ function App() {
           <Route path="/vehicles/edit/:id" element={<EditVehicle />} />
 
           <Route path="/repair-jobs" element={<RepairJobs />} />
+          <Route path="/repair-jobs/new" element={<CreateRepairJob />} />
+          <Route path="/repair-jobs/edit/:id" element={<EditRepairJob />} />
+ 
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/inventory/new" element={<CreateInventoryItem />} />
+          <Route path="/inventory/edit/:id" element={<EditInventoryItem />} />
+
+          
           <Route path="/invoices" element={<Invoices />} />
         </Route>
       </Route>

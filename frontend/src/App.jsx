@@ -1,3 +1,4 @@
+import './App.css';
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
@@ -20,6 +21,8 @@ import CreateInventoryItem from "./pages/CreateInventoryItem";
 import EditInventoryItem from "./pages/EditInventoryItem";
 
 import Invoices from "./pages/Invoices";
+import CreateInvoice from "./pages/CreateInvoice";
+import EditInvoice from "./pages/EditInvoice";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
@@ -53,6 +56,8 @@ function App() {
 
           
           <Route path="/invoices" element={<Invoices />} />
+          <Route path="/invoices/new" element={<CreateInvoice />} />
+          <Route path="/invoices/edit/:id" element={<EditInvoice />} />   {/* ← Add this */}
         </Route>
       </Route>
     </Routes>

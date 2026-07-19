@@ -1,7 +1,43 @@
 const Invoice = require('../models/invoice.model');
-const RepairJob = require('../models/repairJob.model'); // Assuming this exists
+const RepairJob = require('../models/repairJob.model');
 const Inventory = require('../models/inventory.model');
-const mongoose = require('mongoose');
+
+// Helper function to process parts (DRY + improved validation)
+const processInvoiceParts = async (parts, userId) => {
+  if (!parts || parts.length === 0) {
+    return [];
+  }
+
+  const processedParts = [];
+
+  for (const item of parts) {
+    // Enhanced validation
+    if (!item.partName || !item.partName.trim()) {
+      throw new Error('Each part must have a valid partName');
+    }
+    if (!item.quantity || item.quantity < 1) {
+      throw new Error('Quantity must be greater than 0');
+    }
+
+    const inventoryItem = await Inventory.findOne({
+      partName: { $regex: new RegExp(`^${item.partName}$`, 'i') },
+      createdBy: userId
+    });
+
+    if (!inventoryItem) {
+      throw new Error(`Part not found: ${item.partName}`);
+    }
+
+    processedParts.push({
+      part: inventoryItem._id,
+      partName: inventoryItem.partName,
+      quantity: item.quantity,
+      price: inventoryItem.sellingPrice
+    });
+  }
+
+  return processedParts;
+};
 
 // @desc    Create new invoice
 // @route   POST /api/invoices
@@ -54,34 +90,9 @@ const createInvoice = async (req, res) => {
       });
     }
 
-    const processedParts = [];
+    const processedParts = await processInvoiceParts(parts, req.user.id);
 
-    for (const item of parts) {
-      if (!item.partName || !item.quantity) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Each part must have partName and quantity' 
-        });
-      }
-      const inventoryItem = await Inventory.findOne({
-        partName: { $regex: new RegExp(`^${item.partName}$`, 'i') }, // case-insensitive exact match
-        createdBy: req.user.id
-      });
-      if (!inventoryItem) {
-        return res.status(404).json({
-          success: false,
-          message: `Part not found: ${item.partName}`
-        });
-      }
-      processedParts.push({
-        part: inventoryItem._id,
-        partName: inventoryItem.partName,
-        quantity: item.quantity,
-        price: inventoryItem.sellingPrice   // ← Auto fetch price
-      });
-    }
-
-    // 3. Create invoice using data from Repair Job
+    // 3. Create invoice
     const invoice = new Invoice({
       repairJob: repair._id,
       customer: repair.customer?._id,
@@ -118,7 +129,6 @@ const createInvoice = async (req, res) => {
     });
   }
 };
-
 
 // @desc    Get all invoices
 // @route   GET /api/invoices
@@ -203,29 +213,45 @@ const updateInvoice = async (req, res) => {
       });
     }
 
-    const allowedUpdates = ['laborCharge', 'tax', 'discount', 'notes', 'paymentStatus', 'parts'];
+    const { 
+      laborCharge, 
+      tax, 
+      discount, 
+      notes, 
+      paymentStatus,
+      parts 
+    } = req.body;
 
-    allowedUpdates.forEach(field => {
-      if (req.body[field] !== undefined) {
-        invoice[field] = req.body[field];
-      }
-    });
+    // Update basic fields
+    if (laborCharge !== undefined) invoice.laborCharge = laborCharge;
+    if (tax !== undefined) invoice.tax = tax;
+    if (discount !== undefined) invoice.discount = discount;
+    if (notes !== undefined) invoice.notes = notes;
+    if (paymentStatus !== undefined) invoice.paymentStatus = paymentStatus;
+
+    // Re-process parts if provided
+    if (parts !== undefined) {
+      const processedParts = await processInvoiceParts(parts, req.user.id);
+      invoice.parts = processedParts;
+    }
 
     const updatedInvoice = await invoice.save();
 
     const populated = await Invoice.findById(updatedInvoice._id)
       .populate('customer')
       .populate('vehicle')
-      .populate('parts.part');
+      .populate('parts.part')
+      .populate('repairJob');
 
     res.json({
       success: true,
       data: populated
     });
   } catch (error) {
+    console.error('Invoice update error:', error);
     res.status(400).json({
       success: false,
-      message: error.message
+      message: error.message || 'Failed to update invoice'
     });
   }
 };

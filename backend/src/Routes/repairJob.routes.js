@@ -7,8 +7,8 @@ router.use(protect);
 router.post('/',createRepairJob);
 router.get('/', getAllRepairJobs);
 router.get('/:id',getRepairJobById);
-router.get('/id',updateRepairJob);
-router.get('/:id',deleteRepairJob);
+router.put('/:id', updateRepairJob);
+router.delete('/:id',deleteRepairJob);
 
 module.exports = router;
 

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { LoadingSpinner } from '../components/common';
 
 const Login = () => {
   const { login } = useAuth();
@@ -125,7 +126,7 @@ const Login = () => {
               <span className="relative z-10 flex items-center justify-center gap-3">
                 {isLoading ? (
                   <>
-                    <div className="spinner spinner-sm"></div>
+                    <LoadingSpinner size="sm" text={null} />
                     <span>Authenticating...</span>
                   </>
                 ) : (

@@ -3,6 +3,7 @@ const Vehicle = require('../models/vehicle.model');
 const RepairJob = require('../models/repairJob.model');
 const Inventory = require('../models/inventory.model');
 const Invoice = require('../models/invoice.model');
+const mongoose = require('mongoose');
 
 const getDashboardStats = async (req, res) => {
   try {
@@ -12,12 +13,41 @@ const getDashboardStats = async (req, res) => {
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-    // 🔍 Debug logging
     console.log('🔍 Dashboard Request - User ID:', userId);
-    console.log('🔍 Date Range:', {
-      start: firstDayOfMonth,
-      end: firstDayOfNextMonth
-    });
+
+    // Revenue Chart Query (Last 6 months)
+    const revenueChartPromise = Invoice.aggregate([
+      {
+        $match: {
+          createdBy: new mongoose.Types.ObjectId(userId),
+          paymentStatus: "Paid"
+        }
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" }
+          },
+          revenue: { $sum: "$total" }
+        }
+      },
+      { $sort: { "_id.year": -1, "_id.month": -1 } },
+      { $limit: 6 },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
+      {
+        $project: {
+          _id: 0,
+          month: {
+            $arrayElemAt: [
+              ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              "$_id.month"
+            ]
+          },
+          revenue: 1
+        }
+      }
+    ]);
 
     // Run all queries in parallel
     const [
@@ -27,7 +57,8 @@ const getDashboardStats = async (req, res) => {
       completedJobs,
       pendingPayments,
       lowStockCount,
-      monthlyRevenueAgg
+      monthlyRevenueResult,
+      revenueChart
     ] = await Promise.all([
       Customer.countDocuments({ createdBy: userId }),
       Vehicle.countDocuments({ createdBy: userId }),
@@ -41,45 +72,34 @@ const getDashboardStats = async (req, res) => {
       }),
       Invoice.countDocuments({
         createdBy: userId,
-        paymentStatus: { $ne: 'PAID' }
+        paymentStatus: { $in: ['Pending', 'Partially Paid'] }
       }),
-      
-      // ✅ FIXED: Low Stock Query
+
+      // Low Stock
       Inventory.countDocuments({
         createdBy: userId,
         $expr: { $lte: ['$quantity', '$minimumStock'] }
-      }).catch(err => {
-        console.error('❌ Low stock query error:', err);
-        return 0;
-      }),
-      
-      // Monthly Revenue
+      }).catch(() => 0),
+
+      // Current Month Revenue
       Invoice.aggregate([
         {
           $match: {
-            createdBy: userId,
-            createdAt: {
-              $gte: firstDayOfMonth,
-              $lt: firstDayOfNextMonth
-            }
+            createdBy: new mongoose.Types.ObjectId(userId),
+            paymentStatus: "Paid",
+            createdAt: { $gte: firstDayOfMonth, $lt: firstDayOfNextMonth }
           }
         },
-        {
-          $group: {
-            _id: null,
-            total: { $sum: '$total' }  // ← Using 'total' field from Invoice
-          }
-        }
-      ]).then(r => {
-        console.log('🔍 Monthly revenue result:', JSON.stringify(r));
-        return r[0] ? r[0].total : 0;
-      }).catch(err => {
-        console.error('❌ Revenue query error:', err);
-        return 0;
-      })
+        { $group: { _id: null, total: { $sum: '$total' } } }
+      ]).then(r => r[0]?.total || 0),
+
+      // Revenue Chart (Last 6 Months)
+      revenueChartPromise
     ]);
 
-    // 🔍 Debug logging
+    const monthlyRevenue = monthlyRevenueResult || 0;
+
+    // Debug log
     console.log('📊 Dashboard Results:', {
       customers,
       vehicles,
@@ -87,7 +107,8 @@ const getDashboardStats = async (req, res) => {
       completedJobs,
       pendingPayments,
       lowStockItems: lowStockCount,
-      monthlyRevenue: monthlyRevenueAgg
+      monthlyRevenue,
+      revenueChartCount: revenueChart?.length || 0
     });
 
     res.status(200).json({
@@ -99,7 +120,8 @@ const getDashboardStats = async (req, res) => {
         completedJobs,
         lowStockItems: lowStockCount,
         pendingPayments,
-        monthlyRevenue: monthlyRevenueAgg
+        monthlyRevenue,
+        revenueChart: revenueChart || []   // ← Always returns array
       }
     });
   } catch (error) {

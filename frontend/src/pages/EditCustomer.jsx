@@ -1,12 +1,14 @@
+// pages/EditCustomer.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import customerService from '../services/customerService';
 import CustomerForm from '../components/customer/CustomerForm';
+import { LoadingSpinner, ErrorMessage } from '../components/common';
 
 const EditCustomer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  
+
   const [customer, setCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -47,50 +49,70 @@ const EditCustomer = () => {
     }
   };
 
+  // Loading State
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading customer details..." />
       </div>
     );
   }
 
+  // Error State (Customer not found)
   if (error && !customer) {
     return (
-      <div className="max-w-2xl mx-auto p-6">
-        <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-lg text-center">
-          <p className="mb-4">{error}</p>
-          <button 
+      <div className="animate-slideUp max-w-3xl mx-auto">
+        <div className="mb-8">
+          <button
             onClick={() => navigate('/customers')}
-            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
+            className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
           >
+            <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
             Back to Customers
           </button>
         </div>
+        <ErrorMessage 
+          title="Customer Not Found"
+          message={error}
+          onRetry={() => navigate('/customers')}
+        />
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="animate-slideUp max-w-3xl mx-auto">
+      {/* Header */}
       <div className="mb-8">
         <button
           onClick={() => navigate('/customers')}
-          className="text-blue-600 hover:text-blue-800 flex items-center gap-2 mb-4"
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
         >
-          ← Back to Customers
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Customers
         </button>
-        <h1 className="text-3xl font-bold text-gray-800">Edit Customer</h1>
-        <p className="text-gray-600 mt-1">Update customer information</p>
+        <div>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Edit Customer</h1>
+          <p className="text-zinc-400 text-sm mt-1">Update customer information</p>
+        </div>
       </div>
 
+      {/* Error State */}
       {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
-          {error}
+        <div className="mb-6">
+          <ErrorMessage 
+            message={error}
+            title="Update Failed"
+          />
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+      {/* Form */}
+      <div className="card card-glass rounded-2xl p-6 md:p-8">
         <CustomerForm 
           initialValues={customer}
           onSubmit={handleSubmit} 

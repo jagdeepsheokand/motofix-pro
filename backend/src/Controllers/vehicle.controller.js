@@ -109,20 +109,69 @@ const getVehicle = async (req, res) => {
 // ============================================
 // UPDATE Vehicle
 // ============================================
+// ============================================
+// UPDATE Vehicle - SECURE VERSION
+// ============================================
 const updateVehicle = async (req, res) => {
   try {
+    // ✅ Whitelist of fields that are allowed to be updated
+    const allowedUpdates = [
+      'registrationNumber',
+      'brand',
+      'model',
+      'year',
+      'color',
+      'chassisNumber',
+      'engineNumber',
+      'fuelType',
+      'mileage',
+      'owner',           // Allow changing owner (carefully validated)
+      'notes',
+      'images'
+    ];
+
+    // Filter req.body to only include allowed fields
+    const updates = {};
+    Object.keys(req.body).forEach(key => {
+      if (allowedUpdates.includes(key)) {
+        updates[key] = req.body[key];
+      }
+    });
+
+    // If no valid fields to update
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'No valid fields to update'
+      });
+    }
+
+    // Special handling if owner is being changed
+    if (updates.owner) {
+      const customer = await Customer.findOne({
+        _id: updates.owner,
+        createdBy: req.user.id
+      });
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          error: 'Customer not found or not authorized'
+        });
+      }
+    }
+
     const vehicle = await Vehicle.findOneAndUpdate(
       {
         _id: req.params.id,
         createdBy: req.user.id
       },
-      req.body,
+      updates,                    // ← Only safe fields
       {
         new: true,
         runValidators: true
       }
-    )
-    .populate('owner', 'name email phone');
+    ).populate('owner', 'name email phone');
 
     if (!vehicle) {
       return res.status(404).json({ 

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import inventoryService from '../services/inventoryService';
 import InventoryForm from '../components/inventory/InventoryForm';
+import { ErrorMessage } from '../components/common';
 
 const CreateInventoryItem = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,8 +16,6 @@ const CreateInventoryItem = () => {
       setError(null);
       
       await inventoryService.createInventoryItem(formData);
-      
-      // Navigate back to inventory list on success
       navigate('/inventory');
     } catch (err) {
       console.error('Error creating inventory item:', err);
@@ -31,20 +30,43 @@ const CreateInventoryItem = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Create Inventory Item</h1>
-        <p className="text-gray-600 mt-1">Add a new part or accessory to your inventory</p>
+    <div className="animate-slideUp max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <button
+          onClick={() => navigate('/inventory')}
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
+        >
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Inventory
+        </button>
+        <div>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Create Inventory Item</h1>
+          <p className="text-zinc-400 text-sm mt-1">Add a new part or accessory to your inventory</p>
+        </div>
       </div>
 
-      <InventoryForm
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isLoading={isLoading}
-        buttonText="Create Item"
-        cancelText="Cancel"
-        error={error}
-      />
+      {/* Error State */}
+      {error && (
+        <div className="mb-6">
+          <ErrorMessage 
+            message={error}
+            title="Creation Failed"
+          />
+        </div>
+      )}
+
+      <div className="card card-glass rounded-2xl p-6 md:p-8">
+        <InventoryForm
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          isLoading={isLoading}
+          buttonText="Create Item"
+          cancelText="Cancel"
+        />
+      </div>
     </div>
   );
 };

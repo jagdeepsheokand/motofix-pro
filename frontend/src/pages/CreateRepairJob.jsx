@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import RepairJobForm from '../components/repairJobs/RepairJobForm';
 import repairJobService from '../services/repairJobService';
 import vehicleService from '../services/vehicleService';
+import { LoadingSpinner, ErrorMessage } from '../components/common';
 
 const CreateRepairJob = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -13,7 +14,6 @@ const CreateRepairJob = () => {
 
   const navigate = useNavigate();
 
-  // Extracted for reusability and retry capability
   const fetchVehicles = async () => {
     try {
       setLoadingVehicles(true);
@@ -38,7 +38,7 @@ const CreateRepairJob = () => {
 
     try {
       await repairJobService.createRepairJob(formData);
-      navigate("/repair-jobs");        // Clean navigation (no alert)
+      navigate("/repair-jobs");
     } catch (err) {
       console.error("Create error:", err);
       setError(err.response?.data?.message || "Failed to create repair job. Please try again.");
@@ -50,22 +50,28 @@ const CreateRepairJob = () => {
   // Empty state when no vehicles exist
   if (!loadingVehicles && vehicles.length === 0) {
     return (
-      <div className="p-6 max-w-2xl mx-auto text-center">
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-10">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">No Vehicles Found</h2>
-          <p className="text-gray-600 mb-8">
+      <div className="animate-slideUp max-w-2xl mx-auto">
+        <div className="card card-glass rounded-2xl p-12 text-center border border-dashed border-slate-700/50">
+          <div className="text-5xl mb-4">🚗</div>
+          <h2 className="text-2xl font-bold text-white mb-3">No Vehicles Found</h2>
+          <p className="text-zinc-400 text-sm mb-8 max-w-md mx-auto">
             You need to create at least one vehicle before creating a repair job.
           </p>
-          <div className="space-x-4">
+          <div className="flex flex-wrap justify-center gap-3">
             <button
               onClick={() => navigate('/vehicles/new')}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              className="btn-primary px-6 py-3 rounded-xl text-sm"
             >
-              Create New Vehicle
+              <span className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Create New Vehicle
+              </span>
             </button>
             <button
               onClick={fetchVehicles}
-              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+              className="px-6 py-3 rounded-xl text-sm font-medium text-zinc-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 transition-all duration-200"
             >
               Retry
             </button>
@@ -76,37 +82,47 @@ const CreateRepairJob = () => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Create New Repair Job</h1>
-          <p className="text-gray-600 mt-1">Fill in the details below</p>
-        </div>
+    <div className="animate-slideUp max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="mb-8">
         <button
           onClick={() => navigate('/repair-jobs')}
-          className="text-gray-600 hover:text-gray-800 flex items-center gap-1"
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
         >
-          ← Back to List
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Repair Jobs
         </button>
+        <div>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Create New Repair Job</h1>
+          <p className="text-zinc-400 text-sm mt-1">Fill in the details below</p>
+        </div>
       </div>
 
+      {/* Error State */}
       {error && (
-        <div className="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
+        <div className="mb-6">
+          <ErrorMessage 
+            message={error}
+            title="Creation Failed"
+          />
         </div>
       )}
 
       {loadingVehicles ? (
-        <div className="text-center py-12">
-          <p className="text-lg text-gray-600">Loading available vehicles...</p>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <LoadingSpinner size="lg" text="Loading available vehicles..." />
         </div>
       ) : (
-        <RepairJobForm
-          onSubmit={handleSubmit}
-          loading={submitting}
-          vehicles={vehicles}
-          isEditMode={false}
-        />
+        <div className="card card-glass rounded-2xl p-6 md:p-8">
+          <RepairJobForm
+            onSubmit={handleSubmit}
+            loading={submitting}
+            vehicles={vehicles}
+            isEditMode={false}
+          />
+        </div>
       )}
     </div>
   );

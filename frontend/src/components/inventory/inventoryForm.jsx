@@ -1,4 +1,4 @@
-// components/inventory/InventoryForm.jsx
+// src/components/inventory/InventoryForm.jsx
 import React, { useState, useEffect } from 'react';
 
 const InventoryForm = ({ 
@@ -10,7 +10,6 @@ const InventoryForm = ({
   cancelText = "Cancel",
   error = null
 }) => {
-  // Form state
   const [formData, setFormData] = useState({
     partName: '',
     sku: '',
@@ -24,11 +23,9 @@ const InventoryForm = ({
     location: ''
   });
 
-  // Validation errors
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  // Populate form when editing
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -46,7 +43,6 @@ const InventoryForm = ({
     }
   }, [initialData]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -54,7 +50,6 @@ const InventoryForm = ({
       [name]: value
     }));
     
-    // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -63,7 +58,6 @@ const InventoryForm = ({
     }
   };
 
-  // Handle blur for validation
   const handleBlur = (e) => {
     const { name } = e.target;
     setTouched(prev => ({
@@ -71,7 +65,6 @@ const InventoryForm = ({
       [name]: true
     }));
     
-    // Validate field on blur
     const fieldError = validateField(name, formData[name]);
     if (fieldError) {
       setErrors(prev => ({
@@ -81,7 +74,6 @@ const InventoryForm = ({
     }
   };
 
-  // Validate a single field
   const validateField = (name, value) => {
     const requiredFields = ['partName', 'sku', 'category', 'quantity', 'minimumStock', 'costPrice', 'sellingPrice'];
     
@@ -89,7 +81,6 @@ const InventoryForm = ({
       return `${name.replace(/([A-Z])/g, ' $1').trim()} is required`;
     }
 
-    // Numeric validations
     if (['quantity', 'minimumStock', 'costPrice', 'sellingPrice'].includes(name)) {
       const numValue = parseFloat(value);
       if (value && (isNaN(numValue) || numValue < 0)) {
@@ -100,7 +91,6 @@ const InventoryForm = ({
     return '';
   };
 
-  // Validate entire form - returns errors object
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = ['partName', 'sku', 'category', 'quantity', 'minimumStock', 'costPrice', 'sellingPrice'];
@@ -116,24 +106,19 @@ const InventoryForm = ({
     return newErrors;
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Mark all fields as touched
     const allTouched = {};
     Object.keys(formData).forEach(key => {
       allTouched[key] = true;
     });
     setTouched(allTouched);
 
-    // Validate form and get errors
     const newErrors = validateForm();
     setErrors(newErrors);
 
-    // Check if there are any errors
     if (Object.keys(newErrors).length > 0) {
-      // Scroll to first error
       const firstErrorField = Object.keys(newErrors)[0];
       if (firstErrorField) {
         const element = document.querySelector(`[name="${firstErrorField}"]`);
@@ -144,7 +129,6 @@ const InventoryForm = ({
       return;
     }
 
-    // Prepare submission data - convert numeric strings to numbers and trim text
     const submissionData = {
       partName: formData.partName.trim(),
       sku: formData.sku.trim(),
@@ -158,89 +142,128 @@ const InventoryForm = ({
       sellingPrice: parseFloat(formData.sellingPrice) || 0
     };
 
-    // Call parent's onSubmit handler
     onSubmit(submissionData);
   };
 
-  // Handle cancel
   const handleCancel = () => {
     if (onCancel) {
       onCancel();
     }
   };
 
-  // Helper to determine if field has error
   const hasError = (fieldName) => {
     return touched[fieldName] && errors[fieldName];
   };
 
-  // Input field renderer with label and error
   const renderField = (label, name, type = "text", placeholder = "", required = false) => {
     const isTextarea = type === "textarea";
     const isNumber = type === "number";
     
-    // Determine step attribute for number inputs
     let step = "1";
     if (isNumber) {
       if (name === 'costPrice' || name === 'sellingPrice') {
-        step = "0.01"; // Currency fields can have decimals
+        step = "0.01";
       } else {
-        step = "1"; // Quantity fields are integers
+        step = "1";
       }
     }
     
+    const iconMap = {
+      partName: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      ),
+      sku: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+        </svg>
+      ),
+      category: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      ),
+      quantity: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      ),
+      costPrice: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v1m0 9v1m0-1c-1.11 0-2.08-.402-2.599-1M12 17v-1" />
+        </svg>
+      ),
+      supplier: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      ),
+      location: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      )
+    };
+
     return (
       <div className="mb-4">
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-          {label} {required && <span className="text-red-500">*</span>}
+        <label htmlFor={name} className="block text-sm font-medium text-zinc-300 mb-1.5">
+          {label} {required && <span className="text-orange-400">*</span>}
         </label>
-        {isTextarea ? (
-          <textarea
-            id={name}
-            name={name}
-            value={formData[name]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            rows="3"
-            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-              ${hasError(name) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500'}`}
-            placeholder={placeholder}
-            disabled={isLoading}
-          />
-        ) : (
-          <input
-            type={isNumber ? "number" : "text"}
-            id={name}
-            name={name}
-            value={formData[name]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            step={step}
-            min="0"
-            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors
-              ${hasError(name) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500'}`}
-            placeholder={placeholder}
-            disabled={isLoading}
-          />
-        )}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span className="text-zinc-500">{iconMap[name]}</span>
+          </div>
+          {isTextarea ? (
+            <textarea
+              id={name}
+              name={name}
+              value={formData[name]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              rows="3"
+              className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 text-white placeholder-zinc-500 transition-all duration-200 resize-y ${
+                hasError(name) ? 'border-red-500/50' : 'border-slate-700/50'
+              }`}
+              placeholder={placeholder}
+              disabled={isLoading}
+            />
+          ) : (
+            <input
+              type={isNumber ? "number" : "text"}
+              id={name}
+              name={name}
+              value={formData[name]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              step={step}
+              min="0"
+              className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 text-white placeholder-zinc-500 transition-all duration-200 ${
+                hasError(name) ? 'border-red-500/50' : 'border-slate-700/50'
+              }`}
+              placeholder={placeholder}
+              disabled={isLoading}
+            />
+          )}
+        </div>
         {hasError(name) && (
-          <p className="mt-1 text-sm text-red-600">{errors[name]}</p>
+          <p className="mt-1 text-sm text-red-400">{errors[name]}</p>
         )}
       </div>
     );
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
-      {/* Form Error Display */}
+    <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400">
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Left Column */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           {renderField("Part Name", "partName", "text", "Enter part name", true)}
           {renderField("SKU", "sku", "text", "Enter SKU (e.g., BRK-001)", true)}
@@ -248,7 +271,6 @@ const InventoryForm = ({
           {renderField("Description", "description", "textarea", "Enter part description", false)}
         </div>
 
-        {/* Right Column */}
         <div>
           {renderField("Quantity", "quantity", "number", "Enter quantity in stock", true)}
           {renderField("Minimum Stock", "minimumStock", "number", "Enter minimum stock level", true)}
@@ -259,14 +281,13 @@ const InventoryForm = ({
         </div>
       </div>
 
-      {/* Form Actions */}
-      <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+      <div className="flex justify-end gap-3 pt-6 border-t border-slate-700/30">
         {onCancel && (
           <button
             type="button"
             onClick={handleCancel}
             disabled={isLoading}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+            className="px-6 py-3 rounded-xl text-sm font-medium text-zinc-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 transition-all duration-200"
           >
             {cancelText}
           </button>
@@ -274,19 +295,20 @@ const InventoryForm = ({
         <button
           type="submit"
           disabled={isLoading}
-          className={`px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors
-            ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className="btn-primary px-6 py-3 rounded-xl text-sm flex items-center gap-2"
         >
           {isLoading ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Processing...
-            </span>
+            <>
+              <div className="spinner spinner-sm"></div>
+              <span>Processing...</span>
+            </>
           ) : (
-            buttonText
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+              </svg>
+              {buttonText}
+            </>
           )}
         </button>
       </div>

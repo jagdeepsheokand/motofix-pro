@@ -1,9 +1,11 @@
-// pages/Dashboard.jsx
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import StatCard from "../components/dashboard/StatCard";
-import LowStockCard from "../components/dashboard/LowStockCard"; 
+import LowStockCard from "../components/dashboard/LowStockCard";
+import { LoadingSpinner, ErrorMessage } from "../components/common";
 import dashboardService from "../services/dashboardService";
+
+import RevenueChart from "../components/dashboard/RevenueChart";
 
 function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -20,7 +22,6 @@ function Dashboard() {
         
         if (response.success) {
           setStats(response.data);
-          console.log('✅ Dashboard stats loaded:', response.data);
         } else {
           throw new Error(response.error || 'Failed to fetch stats');
         }
@@ -37,38 +38,27 @@ function Dashboard() {
     }
   }, [authLoading]);
 
-  // Loading State
   if (authLoading || loading) {
     return (
-      <div className="p-8 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin h-8 w-8 border-4 border-gray-300 border-t-blue-600 rounded-full mx-auto mb-4"></div>
-          <p className="text-xl">Loading dashboard...</p>
-        </div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading dashboard..." />
       </div>
     );
   }
 
-  // Error State
   if (error && !stats) {
     return (
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-        <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-xl max-w-md mx-auto">
-          <h2 className="font-semibold mb-2">Failed to load dashboard data</h2>
-          <p className="mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-          >
-            🔄 Retry
-          </button>
-        </div>
+      <div className="animate-slideUp">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-8 tracking-tight">Dashboard</h1>
+        <ErrorMessage 
+          title="Failed to load dashboard data"
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
       </div>
     );
   }
 
-  // Destructure stats
   const {
     customers = 0,
     vehicles = 0,
@@ -76,41 +66,54 @@ function Dashboard() {
     completedJobs = 0,
     lowStockItems = 0,
     pendingPayments = 0,
-    monthlyRevenue = 0
+    monthlyRevenue = 0,
+    revenueChart = []
   } = stats || {};
 
-  // Cards configuration
   const cards = [
-    { title: "Customers", value: customers },
-    { title: "Vehicles", value: vehicles },
-    { title: "Active Repair Jobs", value: activeJobs },
-    { title: "Completed Jobs", value: completedJobs },
-    { title: "Monthly Revenue", value: `₹${monthlyRevenue.toLocaleString()}` },
-    { title: "Pending Payments", value: pendingPayments },
-    { title: "Low Stock Items", value: lowStockItems },
+    { title: "Total Customers", value: customers, icon: "👥" },
+    { title: "Total Vehicles", value: vehicles, icon: "🏍" },
+    { title: "Active Repair Jobs", value: activeJobs, icon: "🔧" },
+    { title: "Completed Jobs", value: completedJobs, icon: "✅" },
+    { title: "Monthly Revenue", value: `₹${monthlyRevenue.toLocaleString()}`, icon: "💰" },
+    { title: "Pending Payments", value: pendingPayments, icon: "⏳" },
+    { title: "Low Stock Items", value: lowStockItems, icon: "📦" },
   ];
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+    <div className=" animate-slideUp pb-10">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Dashboard</h1>
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">Welcome back, {user?.name || 'Admin'} 👋</p>
+        </div>
+        <div className="self-start sm:self-auto text-[11px] sm:text-xs text-zinc-500 bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-700/50">
+          Last updated: Today
+        </div>
+      </div>
       
-      {/* Stats Grid - First row with cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
         {cards.map((card, index) => (
           <StatCard 
             key={index} 
             title={card.title} 
-            value={card.value} 
+            value={card.value}
+            icon={card.icon}
           />
         ))}
       </div>
 
-      {/* ✅ Second row with Low Stock Card (full width) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          {/* You can add other cards here like Recent Activity, Top Customers, etc. */}
+      {/* Charts & Side Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Revenue Chart - Takes more space */}
+        <div className="lg:col-span-8">
+          <RevenueChart data={revenueChart} />
         </div>
-        <div className="lg:col-span-1">
+
+        {/* Low Stock Card */}
+        <div className="lg:col-span-4">
           <LowStockCard />
         </div>
       </div>

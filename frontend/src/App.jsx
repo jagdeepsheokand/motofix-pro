@@ -1,5 +1,6 @@
-import './App.css';
+import './app.css';
 import { Routes, Route, Navigate } from "react-router-dom";
+import Layout from './components/Layout/Layout';
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,8 +25,11 @@ import Invoices from "./pages/Invoices";
 import CreateInvoice from "./pages/CreateInvoice";
 import EditInvoice from "./pages/EditInvoice";
 
+import InvoiceDetails from './pages/InvoiceDetails';
+import PrintInvoice from './pages/printInvoice';
+
 import ProtectedRoute from "./routes/ProtectedRoute";
-import MainLayout from "./layouts/MainLayout";
+// import MainLayout from "./layouts/MainLayout";
 
 function App() {
   return (
@@ -34,30 +38,27 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       
-      <Route element={<ProtectedRoute />}>
-        <Route element={<MainLayout />}>
+       <Route element={<ProtectedRoute />}>
+        {/* Use Layout directly as the parent route */}
+        <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/customers/new" element={<CreateCustomer />} />
           <Route path="/customers/edit/:id" element={<EditCustomer />} />
-
-          {/* Vehicles Routes */}
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/vehicles/new" element={<CreateVehicle />} />
           <Route path="/vehicles/edit/:id" element={<EditVehicle />} />
-
           <Route path="/repair-jobs" element={<RepairJobs />} />
           <Route path="/repair-jobs/new" element={<CreateRepairJob />} />
           <Route path="/repair-jobs/edit/:id" element={<EditRepairJob />} />
- 
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/inventory/new" element={<CreateInventoryItem />} />
           <Route path="/inventory/edit/:id" element={<EditInventoryItem />} />
-
-          
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/invoices/new" element={<CreateInvoice />} />
-          <Route path="/invoices/edit/:id" element={<EditInvoice />} />   {/* ← Add this */}
+          <Route path="/invoices/edit/:id" element={<EditInvoice />} />
+          <Route path="/invoices/:id" element={<InvoiceDetails />}/>
+          <Route path="invoices/print/:id" element={<PrintInvoice />} />
         </Route>
       </Route>
     </Routes>

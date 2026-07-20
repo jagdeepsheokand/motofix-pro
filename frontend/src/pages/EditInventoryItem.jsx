@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import inventoryService from '../services/inventoryService';
 import InventoryForm from '../components/inventory/InventoryForm';
+import { LoadingSpinner, ErrorMessage } from '../components/common';
 
 const EditInventoryItem = () => {
   const { id } = useParams();
@@ -13,7 +14,6 @@ const EditInventoryItem = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch inventory item data on mount
   useEffect(() => {
     const fetchItem = async () => {
       try {
@@ -39,8 +39,6 @@ const EditInventoryItem = () => {
       setError(null);
       
       await inventoryService.updateInventoryItem(id, formData);
-      
-      // Navigate back to inventory list on success
       navigate('/inventory');
     } catch (err) {
       console.error('Error updating inventory item:', err);
@@ -54,7 +52,6 @@ const EditInventoryItem = () => {
     navigate('/inventory');
   };
 
-  // Retry function
   const handleRetry = async () => {
     try {
       setIsFetching(true);
@@ -73,10 +70,8 @@ const EditInventoryItem = () => {
   // Loading state
   if (isFetching) {
     return (
-      <div className="p-6 max-w-6xl mx-auto">
-        <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        </div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading inventory item..." />
       </div>
     );
   }
@@ -84,45 +79,68 @@ const EditInventoryItem = () => {
   // Error state
   if (error && !initialData) {
     return (
-      <div className="p-6 max-w-6xl mx-auto">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
-          <p className="font-medium">Error loading inventory item</p>
-          <p className="mt-1">{error}</p>
-          <div className="mt-4 flex gap-3">
-            <button
-              onClick={handleRetry}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-            >
-              Retry
-            </button>
-            <button
-              onClick={() => navigate('/inventory')}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition"
-            >
-              Return to Inventory
-            </button>
-          </div>
+      <div className="animate-slideUp max-w-3xl mx-auto">
+        <div className="mb-8">
+          <button
+            onClick={() => navigate('/inventory')}
+            className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
+          >
+            <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Inventory
+          </button>
         </div>
+        <ErrorMessage 
+          title="Error loading inventory item"
+          message={error}
+          onRetry={handleRetry}
+        />
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Edit Inventory Item</h1>
-        <p className="text-gray-600 mt-1">Update details for {initialData?.partName || 'inventory item'}</p>
+    <div className="animate-slideUp max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <button
+          onClick={() => navigate('/inventory')}
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
+        >
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Inventory
+        </button>
+        <div>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Edit Inventory Item</h1>
+          <p className="text-zinc-400 text-sm mt-1">
+            Update details for <span className="text-orange-400">{initialData?.partName || 'inventory item'}</span>
+          </p>
+        </div>
       </div>
 
-      <InventoryForm
-        initialData={initialData}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isLoading={isLoading}
-        buttonText="Update Item"
-        cancelText="Cancel"
-        error={error}
-      />
+      {/* Error State */}
+      {error && (
+        <div className="mb-6">
+          <ErrorMessage 
+            message={error}
+            title="Update Failed"
+          />
+        </div>
+      )}
+
+      <div className="card card-glass rounded-2xl p-6 md:p-8">
+        <InventoryForm
+          initialData={initialData}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          isLoading={isLoading}
+          buttonText="Update Item"
+          cancelText="Cancel"
+        />
+      </div>
     </div>
   );
 };

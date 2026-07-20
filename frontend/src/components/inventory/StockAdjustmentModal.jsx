@@ -1,6 +1,4 @@
-// components/inventory/StockAdjustmentModal.jsx
 import React, { useState, useEffect } from 'react';
-import { XMarkIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import inventoryService from '../../services/inventoryService';
 
 const StockAdjustmentModal = ({ 
@@ -62,78 +60,89 @@ const StockAdjustmentModal = ({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       ></div>
 
       <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-auto">
+        <div className="relative bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl w-full max-w-md  mx-3 sm:mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900">
+          <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-700/50">
+            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
               Adjust Stock
             </h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-zinc-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-slate-800/50"
             >
-              <XMarkIcon className="h-6 w-6" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
           {/* Body */}
-          <div className="p-6">
-            <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600">Part Name</p>
-              <p className="font-semibold text-gray-900">{item.partName}</p>
-              <p className="text-sm text-gray-600 mt-1">SKU: {item.sku}</p>
-              <p className="text-sm text-gray-600">
-                Current Stock: <span className="font-bold text-blue-600">{item.quantity}</span>
-              </p>
+          <div className="p-4 sm:p-6">
+            {/* Item Info */}
+            <div className="mb-5 p-4 bg-slate-800/50 rounded-xl border border-slate-700/30">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider">Part Name</p>
+              <p className="font-semibold text-white mt-0.5">{item.partName}</p>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-2">
+                <p className="text-sm text-zinc-400">SKU: <span className="text-orange-400">{item.sku}</span></p>
+                <p className="text-sm text-zinc-400">
+                  Current Stock: <span className="font-bold text-blue-400">{item.quantity}</span>
+                </p>
+              </div>
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+              <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
+              {/* Adjustment Type Toggle */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-300 mb-2">
                   Adjustment Type
                 </label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setAdjustmentTypeState('increase')}
-                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                    className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${
                       adjustmentTypeState === 'increase'
-                        ? 'bg-green-600 text-white hover:bg-green-700'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-slate-800/50 text-zinc-400 hover:text-white border border-slate-700/50'
                     }`}
                   >
-                    <PlusIcon className="h-5 w-5" />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                    </svg>
                     Increase
                   </button>
                   <button
                     type="button"
                     onClick={() => setAdjustmentTypeState('decrease')}
-                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                    className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${
                       adjustmentTypeState === 'decrease'
-                        ? 'bg-red-600 text-white hover:bg-red-700'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                        : 'bg-slate-800/50 text-zinc-400 hover:text-white border border-slate-700/50'
                     }`}
                   >
-                    <MinusIcon className="h-5 w-5" />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
+                    </svg>
                     Decrease
                   </button>
                 </div>
               </div>
 
+              {/* Quantity Input */}
               <div className="mb-4">
-                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
-                  Quantity *
+                <label htmlFor="quantity" className="block text-sm font-medium text-zinc-300 mb-1.5">
+                  Quantity <span className="text-orange-400">*</span>
                 </label>
                 <input
                   type="number"
@@ -142,7 +151,7 @@ const StockAdjustmentModal = ({
                   step="1"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 sm:px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 text-white placeholder-zinc-500 transition-all duration-200"
                   placeholder="Enter quantity"
                   required
                   disabled={loading}
@@ -150,8 +159,9 @@ const StockAdjustmentModal = ({
                 />
               </div>
 
-              <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
+              {/* Preview */}
+              <div className="mb-5 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                <p className="text-sm text-blue-400">
                   After adjustment:
                   <span className="font-bold ml-1">
                     {adjustmentTypeState === 'increase' 
@@ -162,11 +172,12 @@ const StockAdjustmentModal = ({
                 </p>
               </div>
 
-              <div className="flex gap-3">
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-zinc-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 transition-all duration-200"
                   disabled={loading}
                 >
                   Cancel
@@ -174,18 +185,15 @@ const StockAdjustmentModal = ({
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                     adjustmentTypeState === 'increase'
-                      ? 'bg-green-600 text-white hover:bg-green-700'
-                      : 'bg-red-600 text-white hover:bg-red-700'
+                      ? 'btn-primary'
+                      : 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30'
                   } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
+                      <div className="spinner spinner-sm"></div>
                       Processing...
                     </span>
                   ) : (
@@ -199,6 +207,6 @@ const StockAdjustmentModal = ({
       </div>
     </div>
   );
-}; 
+};
 
 export default StockAdjustmentModal;

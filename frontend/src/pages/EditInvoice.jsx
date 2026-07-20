@@ -5,8 +5,7 @@ import invoiceService from '../services/invoiceService';
 import repairJobService from '../services/repairJobService';
 import inventoryService from '../services/inventoryService';
 import InvoiceForm from '../components/invoices/InvoiceForm';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import ErrorMessage from '../components/common/ErrorMessage';
+import { LoadingSpinner, ErrorMessage } from '../components/common';
 
 const EditInvoice = () => {
   const { id } = useParams();
@@ -73,45 +72,74 @@ const EditInvoice = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading invoice details..." />
+      </div>
+    );
   }
 
   if (error && !invoice) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <ErrorMessage message={error} onRetry={fetchData} />
+      <div className="animate-slideUp max-w-4xl mx-auto">
+        <div className="mb-8">
+          <button
+            onClick={() => navigate('/invoices')}
+            className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
+          >
+            <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Invoices
+          </button>
+        </div>
+        <ErrorMessage 
+          message={error} 
+          onRetry={fetchData}
+        />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Edit Invoice</h1>
-          <p className="text-gray-600 mt-2">
-            Invoice #{invoice?.invoiceNumber || id}
+    <div className="animate-slideUp max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <button
+          onClick={() => navigate('/invoices')}
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
+        >
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Invoices
+        </button>
+        <div>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Edit Invoice</h1>
+          <p className="text-zinc-400 text-sm mt-1">
+            Invoice #<span className="text-orange-400">{invoice?.invoiceNumber || id}</span>
           </p>
         </div>
+      </div>
 
-        {error && (
+      {error && (
+        <div className="mb-6">
           <ErrorMessage 
             message={error} 
             onRetry={fetchData}
-            className="mb-6"
-          />
-        )}
-
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <InvoiceForm
-            repairJobs={repairJobs}
-            inventoryItems={inventoryItems}
-            initialData={invoice}
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            loading={submitting}
           />
         </div>
+      )}
+
+      <div className="card card-glass rounded-2xl p-6 md:p-8">
+        <InvoiceForm
+          repairJobs={repairJobs}
+          inventoryItems={inventoryItems}
+          initialData={invoice}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          loading={submitting}
+        />
       </div>
     </div>
   );

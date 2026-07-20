@@ -1,6 +1,6 @@
 const express = require('express');
 const router= express.Router();
-const{createRepairJob, getAllRepairJobs, getRepairJobById, updateRepairJob, deleteRepairJob}= require('../Controllers/repairJob.controller');
+const{createRepairJob, getAllRepairJobs, getRepairJobById, updateRepairJob, deleteRepairJob}= require('../controllers/repairJob.controller');
 const {protect}= require('../middlewares/auth.middleware');
 router.use(protect);
 

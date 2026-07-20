@@ -5,8 +5,7 @@ import invoiceService from '../services/invoiceService';
 import repairJobService from '../services/repairJobService';
 import inventoryService from '../services/inventoryService';
 import InvoiceForm from '../components/invoices/InvoiceForm';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import ErrorMessage from '../components/common/ErrorMessage';
+import { LoadingSpinner, ErrorMessage } from '../components/common';
 
 const CreateInvoice = () => {
   const [repairJobs, setRepairJobs] = useState([]);
@@ -55,7 +54,6 @@ const CreateInvoice = () => {
         setError(result.message || 'Failed to create invoice');
       }
     } catch (err) {
-      // Show real backend validation messages
       const errorMessage = err.response?.data?.message || err.message || 'Failed to create invoice';
       setError(errorMessage);
     } finally {
@@ -68,34 +66,49 @@ const CreateInvoice = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading data..." />
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create New Invoice</h1>
-          <p className="text-gray-600 mt-2">Generate invoice for a completed repair job</p>
+    <div className="animate-slideUp max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <button
+          onClick={() => navigate('/invoices')}
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 mb-4 group"
+        >
+          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Invoices
+        </button>
+        <div>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Create New Invoice</h1>
+          <p className="text-zinc-400 text-sm mt-1">Generate invoice for a completed repair job</p>
         </div>
+      </div>
 
-        {error && (
+      {error && (
+        <div className="mb-6">
           <ErrorMessage 
             message={error} 
             onRetry={fetchInitialData}
-            className="mb-6"
-          />
-        )}
-
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <InvoiceForm
-            repairJobs={repairJobs}
-            inventoryItems={inventoryItems}
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            loading={submitting}
           />
         </div>
+      )}
+
+      <div className="card card-glass rounded-2xl p-6 md:p-8">
+        <InvoiceForm
+          repairJobs={repairJobs}
+          inventoryItems={inventoryItems}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          loading={submitting}
+        />
       </div>
     </div>
   );

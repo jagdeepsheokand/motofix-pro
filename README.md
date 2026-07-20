@@ -1,8 +1,14 @@
 # 🚗 MotoFix Pro
 
-A full-stack **Garage Management System** built with the **MERN Stack** to help mechanics and garage owners efficiently manage customers, vehicles, repair jobs, inventory, invoices, and business analytics.
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-> **Current Status:** ✅ Backend Complete | 🚧 Frontend In Progress
+MotoFix Pro is a **full-stack Garage Management System** built with the **MERN Stack**. It helps mechanics and garage owners efficiently manage customers, vehicles, repair jobs, inventory, invoices, and business analytics through a modern and responsive web application.
+
+> **Current Status:** ✅ Full-Stack Application Completed
 
 ---
 
@@ -10,90 +16,122 @@ A full-stack **Garage Management System** built with the **MERN Stack** to help 
 
 ## 🔐 Authentication
 
-* User Registration
-* User Login
-* JWT Authentication
-* HttpOnly Cookie-based Authentication
-* Protected Routes
-* Secure Password Hashing (bcrypt)
-* User Profile
-* Logout
+- User Registration
+- Secure Login
+- JWT Authentication
+- HttpOnly Cookie Authentication
+- Protected Routes
+- Password Hashing (bcrypt)
+- User Profile
+- Logout
 
 ---
 
 ## 👥 Customer Management
 
-* Create Customer
-* View All Customers
-* View Customer by ID
-* Update Customer
-* Delete Customer
-* User-specific Ownership Authorization
+- Add Customers
+- View Customer List
+- Search Customers
+- Update Customer Information
+- Delete Customers
+- User-specific Data Isolation
 
 ---
 
 ## 🚗 Vehicle Management
 
-* Add Vehicle
-* View All Vehicles
-* View Vehicle Details
-* Update Vehicle
-* Delete Vehicle
-* Customer-Vehicle Relationship
-* Ownership Validation
+- Register Vehicles
+- Customer-Vehicle Relationship
+- View Vehicle Details
+- Update Vehicle Information
+- Delete Vehicles
+- Search & Pagination
 
 ---
 
 ## 🔧 Repair Job Management
 
-* Create Repair Job
-* View Repair Jobs
-* Update Job Status
-* Delete Repair Job
-* Diagnostic Notes
-* Estimated Delivery Date
-* Labor Cost
-* Parts Cost
-* Payment Tracking
-* Balance Due Calculation
+- Create Repair Jobs
+- Assign Customer & Vehicle
+- Diagnostic Notes
+- Repair Status Tracking
+- Labor Cost
+- Parts Cost
+- Estimated Delivery Date
+- Payment Tracking
+- Balance Due Calculation
 
 ---
 
 ## 📦 Inventory Management
 
-* Add Inventory Items
-* Update Inventory
-* Delete Inventory Items
-* Stock Increase/Decrease
-* Low Stock Alerts
-* Search Inventory
-* Filter Inventory
-* Sorting
-* Pagination
-* Ownership Authorization
+- Add Spare Parts
+- Update Inventory
+- Delete Inventory Items
+- Increase/Decrease Stock
+- Low Stock Alerts
+- Search Inventory
+- Filter by Category
+- Pagination
+- Automatic Stock Adjustment
 
 ---
 
 ## 🧾 Invoice Management
 
-* Automatic Invoice Number Generation
-* One Invoice per Repair Job
-* Automatic Total Calculation
-* Tax & Discount Support
-* Payment Status
-* Payment Method
-* Inventory Price Lookup
+- Create Invoices
+- Automatic Invoice Number Generation
+- One Invoice per Repair Job
+- Automatic Total Calculation
+- Tax & Discount Support
+- Payment Status
+- Payment Method
+- Inventory Price Lookup
+- Invoice Editing
+- Invoice Deletion
 
 ---
 
 ## 📊 Dashboard Analytics
 
-* Total Customers
-* Total Vehicles
-* Total Repair Jobs
-* Low Stock Count
-* Pending Payments
-* Monthly Revenue Aggregation
+- Total Customers
+- Total Vehicles
+- Total Repair Jobs
+- Inventory Count
+- Low Stock Items
+- Pending Payments
+- Monthly Revenue
+- Business Overview Cards
+
+---
+
+# 💻 Frontend Features
+
+- Responsive Dashboard
+- Mobile-Friendly Layout
+- Sidebar Navigation
+- Protected Routes
+- Reusable Components
+- Search & Pagination
+- Loading Indicators
+- Error Handling
+- Form Validation
+- Clean UI Design
+
+---
+
+# 🌟 Highlights
+
+- Full MERN Stack Application
+- RESTful API Architecture
+- JWT Authentication
+- Secure HttpOnly Cookies
+- MongoDB Aggregation Pipelines
+- Automatic Invoice Number Generation
+- Inventory Auto Stock Management
+- Dashboard Analytics
+- Responsive Design
+- Component-Based React Architecture
 
 ---
 
@@ -101,30 +139,33 @@ A full-stack **Garage Management System** built with the **MERN Stack** to help 
 
 ## Frontend
 
-* React (Vite)
-* React Router
-* Axios
-* Tailwind CSS
+- React 19
+- Vite
+- React Router DOM
+- Axios
+- Tailwind CSS
+- Context API
 
 ## Backend
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
 
 ## Authentication
 
-* JWT
-* bcrypt
-* HttpOnly Cookies
+- JWT
+- bcrypt
+- HttpOnly Cookies
 
 ## Tools
 
-* Git
-* GitHub
-* Postman
-* VS Code
+- Git
+- GitHub
+- VS Code
+- Postman
+- npm
 
 ---
 
@@ -136,9 +177,9 @@ MotoFix-Pro/
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/
-│   │   ├── routes/
-│   │   ├── models/
 │   │   ├── middlewares/
+│   │   ├── models/
+│   │   ├── routes/
 │   │   ├── services/
 │   │   ├── utils/
 │   │   ├── db/
@@ -149,6 +190,17 @@ MotoFix-Pro/
 │   └── .env
 │
 ├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   ├── context/
+│   │   ├── layouts/
+│   │   └── App.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
 │
 ├── .gitignore
 └── README.md
@@ -193,7 +245,7 @@ npm install
 Create a `.env` file inside the **backend** folder.
 
 ```env
-PORT=5000
+PORT=3000
 
 MONGO_URI=your_mongodb_connection_string
 
@@ -202,7 +254,7 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# ▶️ Run the Project
+# ▶️ Running the Project
 
 ## Backend
 
@@ -211,6 +263,14 @@ cd backend
 npm run dev
 ```
 
+Runs on:
+
+```
+http://localhost:3000
+```
+
+---
+
 ## Frontend
 
 ```bash
@@ -218,100 +278,181 @@ cd frontend
 npm run dev
 ```
 
+Runs on:
+
+```
+http://localhost:5173
+```
+
 ---
 
-# 📡 API Modules
+# 📡 REST API
 
 ## Authentication
 
-* POST `/api/auth/register`
-* POST `/api/auth/login`
-* POST `/api/auth/logout`
-* GET `/api/auth/profile`
-
-## Customers
-
-* POST `/api/customers`
-* GET `/api/customers`
-* GET `/api/customers/:id`
-* PUT `/api/customers/:id`
-* DELETE `/api/customers/:id`
-
-## Vehicles
-
-* POST `/api/vehicles`
-* GET `/api/vehicles`
-* GET `/api/vehicles/:id`
-* PUT `/api/vehicles/:id`
-* DELETE `/api/vehicles/:id`
-
-## Repair Jobs
-
-* POST `/api/repair-jobs`
-* GET `/api/repair-jobs`
-* GET `/api/repair-jobs/:id`
-* PUT `/api/repair-jobs/:id`
-* DELETE `/api/repair-jobs/:id`
-
-## Inventory
-
-* POST `/api/inventory`
-* GET `/api/inventory`
-* GET `/api/inventory/:id`
-* PUT `/api/inventory/:id`
-* DELETE `/api/inventory/:id`
-* PATCH `/api/inventory/:id/stock`
-
-## Invoices
-
-* POST `/api/invoices`
-* GET `/api/invoices`
-* GET `/api/invoices/:id`
-* PUT `/api/invoices/:id`
-* DELETE `/api/invoices/:id`
-
-## Dashboard
-
-* GET `/api/dashboard`
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/auth/register` |
+| POST | `/api/auth/login` |
+| POST | `/api/auth/logout` |
+| GET | `/api/auth/profile` |
 
 ---
 
-# 📈 Current Progress
+## Customers
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/customers` |
+| GET | `/api/customers` |
+| GET | `/api/customers/:id` |
+| PUT | `/api/customers/:id` |
+| DELETE | `/api/customers/:id` |
+
+---
+
+## Vehicles
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/vehicles` |
+| GET | `/api/vehicles` |
+| GET | `/api/vehicles/:id` |
+| PUT | `/api/vehicles/:id` |
+| DELETE | `/api/vehicles/:id` |
+
+---
+
+## Repair Jobs
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/repair-jobs` |
+| GET | `/api/repair-jobs` |
+| GET | `/api/repair-jobs/:id` |
+| PUT | `/api/repair-jobs/:id` |
+| DELETE | `/api/repair-jobs/:id` |
+
+---
+
+## Inventory
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/inventory` |
+| GET | `/api/inventory` |
+| GET | `/api/inventory/:id` |
+| PUT | `/api/inventory/:id` |
+| DELETE | `/api/inventory/:id` |
+| PATCH | `/api/inventory/:id/stock` |
+
+---
+
+## Invoices
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/invoices` |
+| GET | `/api/invoices` |
+| GET | `/api/invoices/:id` |
+| PUT | `/api/invoices/:id` |
+| DELETE | `/api/invoices/:id` |
+
+---
+
+## Dashboard
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/api/dashboard` |
+
+---
+
+# 📈 Project Status
 
 ## ✅ Backend
 
-* Authentication
-* Customer Management
-* Vehicle Management
-* Repair Job Management
-* Inventory Management
-* Invoice System
-* Dashboard Analytics
+- Authentication
+- Customer Management
+- Vehicle Management
+- Repair Job Management
+- Inventory Management
+- Invoice System
+- Dashboard Analytics
 
-## 🚧 Frontend
+---
 
-* Authentication UI
-* Dashboard
-* Customer Module
-* Vehicle Module
-* Repair Job Module
-* Inventory Module
-* Invoice Module
+## ✅ Frontend
+
+- Authentication
+- Dashboard
+- Customer Management
+- Vehicle Management
+- Repair Job Management
+- Inventory Management
+- Invoice Management
+- Responsive Layout
+- Protected Routes
+- Search & Pagination
+- Form Validation
+
+---
+
+# 📸 Screenshots
+
+
+### Login
+
+<img width="100%" alt="Login Screenshot" src="docs/login.png"/>
+
+### Dashboard
+
+<img width="100%" alt="Dashboard Screenshot" src="docs/dashboard.png"/>
+
+### Customers
+
+<img width="100%" alt="Customers Screenshot" src="docs/customer.png"/>
+
+### Vehicles
+
+<img width="100%" alt="Vehicles Screenshot" src="docs/vehicles.png"/>
+
+### Repair Jobs
+
+<img width="100%" alt="Repair Jobs Screenshot" src="docs/repair-jobs.png"/>
+
+### Inventory
+
+<img width="100%" alt="Inventory Screenshot" src="docs/inventory.png"/>
+
+### Invoices
+
+<img width="100%" alt="Invoices Screenshot" src="docs/invoices.png"/>
 
 ---
 
 # 🚀 Future Enhancements
 
-* Role-based Access Control
-* Inventory Transaction History
-* PDF Invoice Generation
-* Image Uploads
-* Email Notifications
-* SMS Notifications
-* Appointment Booking
-* Real-time Updates (Socket.IO)
-* Online Payments
-* Advanced Reporting
+- Role-Based Access Control (Admin / Mechanic)
+- PDF Invoice Generation
+- Email Invoice Delivery
+- SMS Notifications
+- Appointment Scheduling
+- Image Uploads
+- Service History
+- Customer Portal
+- Dark Mode
+- Progressive Web App (PWA)
+- Advanced Reports & Analytics
+- Real-time Notifications (Socket.IO)
+
+---
+
+# 🌐 Deployment
+
+Frontend: Coming Soon
+
+Backend API: Coming Soon
 
 ---
 
@@ -323,6 +464,37 @@ GitHub: https://github.com/jagdeepsheokand
 
 ---
 
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push your branch
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Open a Pull Request
+
+---
+
 # 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
+
+---
+
+⭐ If you found this project helpful, consider giving it a **Star** on GitHub!

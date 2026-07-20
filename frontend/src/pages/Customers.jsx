@@ -95,12 +95,12 @@ const CustomersPage = () => {
           <p className="text-xs text-zinc-500 uppercase tracking-wider">New (30d)</p>
           <p className="text-2xl font-bold text-orange-400">{newCustomers}</p>
         </div>
-        <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 hover:border-blue-500/30 transition-all duration-300">
+        {/* <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 hover:border-blue-500/30 transition-all duration-300">
           <p className="text-xs text-zinc-500 uppercase tracking-wider">Vehicles</p>
           <p className="text-2xl font-bold text-blue-400">
             {customers.reduce((acc, c) => acc + (c.vehicleCount || 0), 0)}
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Search Bar */}

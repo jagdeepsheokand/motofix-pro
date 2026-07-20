@@ -136,10 +136,10 @@ const Inventory = () => {
           <p className="text-xs text-zinc-500 uppercase tracking-wider">Out of Stock</p>
           <p className="text-2xl font-bold text-red-400">{outOfStockItems}</p>
         </div>
-        <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 hover:border-emerald-500/30 transition-all duration-300">
+        {/* <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 hover:border-emerald-500/30 transition-all duration-300">
           <p className="text-xs text-zinc-500 uppercase tracking-wider">Total Value</p>
           <p className="text-2xl font-bold text-emerald-400">₹{totalValue.toLocaleString()}</p>
-        </div>
+        </div> */}
       </div>
 
       {/* Filter & Search Bar */}

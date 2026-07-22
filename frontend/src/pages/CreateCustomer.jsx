@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import customerService from '../services/customerService';
 import CustomerForm from '../components/customer/CustomerForm';
 import { ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const CreateCustomer = () => {
   const navigate = useNavigate();
@@ -15,11 +16,20 @@ const CreateCustomer = () => {
     setError(null);
 
     try {
-      await customerService.createCustomer(formData);
-      navigate('/customers', { replace: true });
+     await customerService.createCustomer(formData);
+
+  toast.success("Customer created successfully!");
+
+  navigate("/customers", { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create customer. Please try again.');
-      console.error('Create customer error:', err);
+        const errorMessage =
+    err.response?.data?.message ||
+    "Failed to create customer. Please try again.";
+
+  setError(errorMessage);
+  toast.error(errorMessage);
+
+  console.error("Create customer error:", err);
     } finally {
       setLoading(false);
     }

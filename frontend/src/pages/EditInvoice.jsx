@@ -55,6 +55,7 @@ const EditInvoice = () => {
       const result = await invoiceService.updateInvoice(id, formData);
 
       if (result.success) {
+        toast.success("Invoice updated successfully");
         navigate('/invoices');
       } else {
         setError(result.message || 'Failed to update invoice');

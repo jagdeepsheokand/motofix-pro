@@ -5,6 +5,7 @@ import RepairJobForm from '../components/repairJobs/RepairJobForm';
 import repairJobService from '../services/repairJobService';
 import vehicleService from '../services/vehicleService';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const CreateRepairJob = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -21,9 +22,10 @@ const CreateRepairJob = () => {
       const data = await vehicleService.getVehicles();
       setVehicles(data);
     } catch (err) {
-      console.error("Failed to load vehicles:", err);
-      setError("Failed to load vehicles. Please try again.");
-    } finally {
+  console.error("Failed to load vehicles:", err);
+  setError("Failed to load vehicles. Please try again.");
+  toast.error("Failed to load vehicles");
+} finally {
       setLoadingVehicles(false);
     }
   };
@@ -38,10 +40,15 @@ const CreateRepairJob = () => {
 
     try {
       await repairJobService.createRepairJob(formData);
+      toast.success("Repair job created successfully");
       navigate("/repair-jobs");
     } catch (err) {
-      console.error("Create error:", err);
-      setError(err.response?.data?.message || "Failed to create repair job. Please try again.");
+      const message =
+  err.response?.data?.message ||
+  "Failed to create repair job. Please try again.";
+
+setError(message);
+toast.error(message);
     } finally {
       setSubmitting(false);
     }

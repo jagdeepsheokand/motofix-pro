@@ -5,6 +5,7 @@ import vehicleService from '../services/vehicleService';
 import customerService from '../services/customerService';
 import VehicleForm from '../components/vehicles/VehicleForm';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const CreateVehicle = () => {
   const navigate = useNavigate();
@@ -47,12 +48,14 @@ const CreateVehicle = () => {
 
       await vehicleService.createVehicle(data);
 
-      navigate('/vehicles', { 
-        state: { message: 'Vehicle created successfully!' } 
-      });
-    } catch (err) {
-      console.error('Failed to create vehicle:', err);
-      setError(err.response?.data?.error || 'Failed to create vehicle. Please try again.');
+     toast.success("Vehicle created successfully!");
+navigate("/vehicles");
+    } catch (err) {const errorMessage =
+  err.response?.data?.error ||
+  "Failed to create vehicle.";
+
+setError(errorMessage);
+toast.error(errorMessage);
     } finally {
       setLoadingSubmit(false);
     }

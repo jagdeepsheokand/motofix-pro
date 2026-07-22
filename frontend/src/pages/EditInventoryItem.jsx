@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import inventoryService from '../services/inventoryService';
 import InventoryForm from '../components/inventory/InventoryForm';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
-
+import { toast } from 'react-toastify';
 const EditInventoryItem = () => {
   const { id } = useParams();
   const navigate = useNavigate();

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import vehicleService from '../services/vehicleService';
 import VehicleTable from "../components/vehicles/VehicleTable";
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const Vehicles = () => {
   const navigate = useNavigate();
@@ -37,18 +38,25 @@ const Vehicles = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this vehicle?')) {
-      return;
-    }
+  if (!window.confirm("Are you sure you want to delete this vehicle?")) {
+    return;
+  }
 
-    try {
-      await vehicleService.deleteVehicle(id);
-      setVehicles(prev => prev.filter(vehicle => vehicle._id !== id));
-    } catch (err) {
-      console.error('Failed to delete vehicle:', err);
-      alert(err.response?.data?.error || 'Failed to delete vehicle. Please try again.');
-    }
-  };
+  try {
+    await vehicleService.deleteVehicle(id);
+
+    setVehicles((prev) => prev.filter((vehicle) => vehicle._id !== id));
+
+    toast.success("Vehicle deleted successfully!");
+  } catch (err) {
+    console.error("Failed to delete vehicle:", err);
+
+    toast.error(
+      err.response?.data?.error ||
+      "Failed to delete vehicle. Please try again."
+    );
+  }
+};
 
   // Filter vehicles based on search
   const filteredVehicles = vehicles.filter(vehicle =>

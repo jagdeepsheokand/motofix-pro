@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { LoadingSpinner } from "../components/common";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const { register } = useAuth();
@@ -57,23 +58,28 @@ const Register = () => {
 
     setLoading(true);
 
-    try {
-      await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
+   try {
+  await register({
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
+  });
 
-      setSuccess("Account created successfully! Redirecting to login...");
-      setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+  toast.success("Account created successfully!");
 
-      setTimeout(() => navigate("/login"), 1800);
-    } catch (err) {
-      const errorMsg = err.response?.data?.message || 
-                      err.response?.data?.error || 
-                      "Registration failed. Please try again.";
-      setError(errorMsg);
-    } finally {
+  setSuccess("Account created successfully! Redirecting to login...");
+  setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+
+  setTimeout(() => navigate("/login"), 1800);
+}catch (err) {
+  const errorMsg =
+    err.response?.data?.message ||
+    err.response?.data?.error ||
+    "Registration failed. Please try again.";
+
+  toast.error(errorMsg);
+  setError(errorMsg);
+}finally {
       setLoading(false);
     }
   };

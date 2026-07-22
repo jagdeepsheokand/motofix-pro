@@ -1,5 +1,6 @@
 // Login.jsx
 import React, { useState } from 'react';
+import { toast } from "react-toastify";
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { LoadingSpinner } from '../components/common';
@@ -23,18 +24,19 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await login(formData);
-      navigate("/dashboard");
-    } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    await login(formData);
+    toast.success("Login successful!");
+    navigate("/dashboard");
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Login failed");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0F172A] to-[#1E1B4B] flex items-center justify-center p-6 font-sans relative overflow-hidden">

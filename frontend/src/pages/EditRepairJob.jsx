@@ -5,6 +5,7 @@ import RepairJobForm from '../components/repairJobs/RepairJobForm';
 import repairJobService from '../services/repairJobService';
 import vehicleService from '../services/vehicleService';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const EditRepairJob = () => {
   const { id } = useParams();
@@ -21,9 +22,10 @@ const EditRepairJob = () => {
       const data = await repairJobService.getRepairJobById(id);
       setRepairJob(data);
     } catch (err) {
-      console.error("Failed to fetch repair job:", err);
-      setError("Failed to load repair job details.");
-    }
+  console.error("Failed to fetch repair job:", err);
+  setError("Failed to load repair job details.");
+  toast.error("Failed to load repair job");
+}
   };
 
   const fetchVehicles = async () => {
@@ -31,9 +33,10 @@ const EditRepairJob = () => {
       const data = await vehicleService.getVehicles();
       setVehicles(data);
     } catch (err) {
-      console.error("Failed to load vehicles:", err);
-      setError("Failed to load vehicles.");
-    }
+  console.error("Failed to load vehicles:", err);
+  setError("Failed to load vehicles.");
+  toast.error("Failed to load vehicles");
+}
   };
 
   useEffect(() => {
@@ -60,12 +63,14 @@ const EditRepairJob = () => {
 
     try {
       await repairJobService.updateRepairJob(id, formData);
+      toast.success("Repair job updated successfully");
       navigate("/repair-jobs");
     } catch (err) {
       console.error("Update error:", err);
       const errorMessage = err.response?.data?.message || 
                           "Failed to update repair job. Please try again.";
       setError(errorMessage);
+toast.error(errorMessage);
     } finally {
       setSubmitting(false);
     }

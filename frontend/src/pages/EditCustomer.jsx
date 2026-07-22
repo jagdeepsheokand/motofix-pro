@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import customerService from '../services/customerService';
 import CustomerForm from '../components/customer/CustomerForm';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const EditCustomer = () => {
   const navigate = useNavigate();
@@ -39,11 +40,20 @@ const EditCustomer = () => {
     setError(null);
 
     try {
-      await customerService.updateCustomer(id, formData);
-      navigate('/customers', { replace: true });
+     await customerService.updateCustomer(id, formData);
+
+  toast.success("Customer updated successfully!");
+
+  navigate("/customers", { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update customer. Please try again.');
-      console.error('Update customer error:', err);
+       const errorMessage =
+    err.response?.data?.message ||
+    "Failed to update customer. Please try again.";
+
+  setError(errorMessage);
+  toast.error(errorMessage);
+
+  console.error("Update customer error:", err);
     } finally {
       setSaving(false);
     }

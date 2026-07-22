@@ -6,7 +6,7 @@ import repairJobService from '../services/repairJobService';
 import inventoryService from '../services/inventoryService';
 import InvoiceForm from '../components/invoices/InvoiceForm';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
-
+import { toast } from 'react-toastify';
 const CreateInvoice = () => {
   const [repairJobs, setRepairJobs] = useState([]);
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -49,6 +49,7 @@ const CreateInvoice = () => {
       const result = await invoiceService.createInvoice(formData);
 
       if (result.success) {
+        toast.success("Invoice created successfully");
         navigate('/invoices');
       } else {
         setError(result.message || 'Failed to create invoice');

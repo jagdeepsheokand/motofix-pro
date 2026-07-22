@@ -1,4 +1,6 @@
 import './app.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from './components/Layout/Layout';
 
@@ -33,6 +35,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
+    <>
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
@@ -62,6 +65,20 @@ function App() {
         </Route>
       </Route>
     </Routes>
+    
+           <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import vehicleService from '../services/vehicleService';
 import customerService from '../services/customerService';
 import VehicleForm from '../components/vehicles/VehicleForm';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const EditVehicle = () => {
   const navigate = useNavigate();
@@ -64,15 +65,21 @@ const EditVehicle = () => {
       setLoadingSubmit(true);
       setError(null);
 
-      await vehicleService.updateVehicle(id, data);
+     await vehicleService.updateVehicle(id, data);
 
-      navigate('/vehicles', { 
-        state: { message: 'Vehicle updated successfully!' } 
-      });
+toast.success("Vehicle updated successfully!");
+
+navigate("/vehicles");
     } catch (err) {
-      console.error('Failed to update vehicle:', err);
-      setError(err.response?.data?.error || 'Failed to update vehicle. Please try again.');
-    } finally {
+  console.error("Failed to update vehicle:", err);
+
+  const errorMessage =
+    err.response?.data?.error ||
+    "Failed to update vehicle. Please try again.";
+
+  setError(errorMessage);
+  toast.error(errorMessage);
+} finally {
       setLoadingSubmit(false);
     }
   };

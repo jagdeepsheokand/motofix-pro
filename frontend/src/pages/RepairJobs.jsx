@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import repairJobService from '../services/repairJobService';
 import RepairJobTable from '../components/repairJobs/RepairJobTable';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const RepairJobs = () => {
   const [repairJobs, setRepairJobs] = useState([]);
@@ -21,9 +22,10 @@ const RepairJobs = () => {
       const jobs = await repairJobService.getRepairJobs();
       setRepairJobs(jobs);
     } catch (err) {
-      console.error("Fetch error:", err);
-      setError("Failed to load repair jobs.");
-    } finally {
+  console.error("Fetch error:", err);
+  setError("Failed to load repair jobs.");
+  toast.error("Failed to load repair jobs");
+} finally {
       setLoading(false);
     }
   };
@@ -39,10 +41,13 @@ const RepairJobs = () => {
 
     try {
       await repairJobService.deleteRepairJob(id);
+toast.success("Repair job deleted successfully");
       await fetchRepairJobs();
     } catch (err) {
-      console.error("Delete error:", err);
-      alert("Failed to delete repair job. Please try again.");
+      
+      toast.error(
+  err.response?.data?.message || "Failed to delete repair job"
+);
     }
   };
 

@@ -17,7 +17,7 @@ const InventoryForm = ({
     description: '',
     quantity: '',
     minimumStock: '',
-    costPrice: '',
+    purchasePrice: '',
     sellingPrice: '',
     supplier: '',
     location: ''
@@ -35,7 +35,7 @@ const InventoryForm = ({
         description: initialData.description || '',
         quantity: initialData.quantity?.toString() || '',
         minimumStock: initialData.minimumStock?.toString() || '',
-        costPrice: initialData.costPrice?.toString() || '',
+        purchasePrice: initialData.purchasePrice?.toString() || '',
         sellingPrice: initialData.sellingPrice?.toString() || '',
         supplier: initialData.supplier || '',
         location: initialData.location || ''
@@ -75,13 +75,13 @@ const InventoryForm = ({
   };
 
   const validateField = (name, value) => {
-    const requiredFields = ['partName', 'sku', 'category', 'quantity', 'minimumStock', 'costPrice', 'sellingPrice'];
+    const requiredFields = ['partName', 'sku', 'category', 'quantity', 'minimumStock', 'purchasePrice', 'sellingPrice'];
     
     if (requiredFields.includes(name) && !value.toString().trim()) {
       return `${name.replace(/([A-Z])/g, ' $1').trim()} is required`;
     }
 
-    if (['quantity', 'minimumStock', 'costPrice', 'sellingPrice'].includes(name)) {
+    if (['quantity', 'minimumStock', 'purchasePrice', 'sellingPrice'].includes(name)) {
       const numValue = parseFloat(value);
       if (value && (isNaN(numValue) || numValue < 0)) {
         return `${name.replace(/([A-Z])/g, ' $1').trim()} must be a positive number`;
@@ -93,7 +93,7 @@ const InventoryForm = ({
 
   const validateForm = () => {
     const newErrors = {};
-    const requiredFields = ['partName', 'sku', 'category', 'quantity', 'minimumStock', 'costPrice', 'sellingPrice'];
+    const requiredFields = ['partName', 'sku', 'category', 'quantity', 'minimumStock', 'purchasePrice', 'sellingPrice'];
     
     requiredFields.forEach(field => {
       const value = formData[field];
@@ -138,7 +138,7 @@ const InventoryForm = ({
       location: formData.location.trim(),
       quantity: parseInt(formData.quantity) || 0,
       minimumStock: parseInt(formData.minimumStock) || 0,
-      costPrice: parseFloat(formData.costPrice) || 0,
+      purchasePrice: parseFloat(formData.purchasePrice) || 0,
       sellingPrice: parseFloat(formData.sellingPrice) || 0
     };
 
@@ -161,7 +161,7 @@ const InventoryForm = ({
     
     let step = "1";
     if (isNumber) {
-      if (name === 'costPrice' || name === 'sellingPrice') {
+      if (name === 'purchasePrice' || name === 'sellingPrice') {
         step = "0.01";
       } else {
         step = "1";
@@ -189,11 +189,7 @@ const InventoryForm = ({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
       ),
-      costPrice: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v1m0 9v1m0-1c-1.11 0-2.08-.402-2.599-1M12 17v-1" />
-        </svg>
-      ),
+ 
       supplier: (
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -274,7 +270,7 @@ const InventoryForm = ({
         <div>
           {renderField("Quantity", "quantity", "number", "Enter quantity in stock", true)}
           {renderField("Minimum Stock", "minimumStock", "number", "Enter minimum stock level", true)}
-          {renderField("Cost Price (₹)", "costPrice", "number", "Enter cost price", true)}
+          {renderField("Purchase Price (₹)", "purchasePrice", "number", "Enter purchase price", true)}
           {renderField("Selling Price (₹)", "sellingPrice", "number", "Enter selling price", true)}
           {renderField("Supplier", "supplier", "text", "Enter supplier name", false)}
           {renderField("Location", "location", "text", "Enter storage location (e.g., Shelf A-1)", false)}

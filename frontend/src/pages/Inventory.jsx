@@ -56,9 +56,13 @@ const Inventory = () => {
     try {
       await inventoryService.deleteInventoryItem(id);
       await fetchInventoryItems();
+      toast.success("Inventory item deleted successfully");
     } catch (err) {
       console.error("Delete error:", err);
-      alert("Failed to delete inventory item. Please try again.");
+      toast.error(
+  err.response?.data?.message ||
+  "Failed to delete inventory item."
+);
     }
   };
 

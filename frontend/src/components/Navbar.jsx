@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import logo from "../assets/logomp-Photoroom.png";
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -10,9 +11,10 @@ const Navbar = () => {
     const handleLogout = async () => {
         try {
             await logout();
+            toast.success("Logged out successfully!");
             navigate("/login");
-        } catch (err) {
-            console.error("Logout failed:", err);
+        } catch (error) {
+            toast.error("Logout failed.");
         }
     };
 
@@ -27,7 +29,7 @@ const Navbar = () => {
                         <img 
                             src={logo} 
                             alt="MotoFix Pro Logo" 
-                            className="w-7 sm:w-10 h-auto relative z-10 drop-shadow-md group-hover:rotate-12 transition-transform duration-300"
+                            className="w-9 sm:w-12 h-auto relative z-10 drop-shadow-md group-hover:rotate-12 transition-transform duration-300"
                         />
                     </div>
                     {/* Always visible - just smaller on mobile */}

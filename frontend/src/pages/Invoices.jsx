@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import invoiceService from '../services/invoiceService';
 import InvoiceTable from '../components/invoices/InvoiceTable';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
+import { toast } from "react-toastify";
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -31,16 +32,18 @@ const Invoices = () => {
       if (result.success) {
         setInvoices(result.data || []);
         setPagination({
-          total: result.total || 0,
-          pages: result.pages || 1,
+          total: result.pagination?.total || 0,
+          pages: result.pagination?.pages || 1,
           currentPage: page,
         });
       } else {
-        setError(result.message || 'Failed to fetch invoices');
+        toast.error(result.message || "Failed to fetch invoices");
+        setError(result.message || "Failed to fetch invoices");
       }
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Error fetching invoices');
       console.error('Fetch invoices error:', err);
+      toast.error("Failed to load invoices");
     } finally {
       setLoading(false);
     }
@@ -63,12 +66,17 @@ const Invoices = () => {
           invoices.length === 1 && pagination.currentPage > 1
             ? pagination.currentPage - 1
             : pagination.currentPage;
-        fetchInvoices(nextPage);
+        await fetchInvoices(nextPage);
+        toast.success("Invoice deleted successfully");
       } else {
-        alert(result.message || 'Failed to delete invoice');
+        toast.error(result.message || "Failed to delete invoice");
       }
     } catch (err) {
-      alert(err.response?.data?.message || err.message || 'Error deleting invoice');
+      toast.error(
+        err.response?.data?.message ||
+        err.message ||
+        "Error deleting invoice"
+      );
     }
   };
 
@@ -77,7 +85,7 @@ const Invoices = () => {
   };
 
   const handleView = (id) => {
-  navigate(`/invoices/${id}`);
+    navigate(`/invoices/${id}`);
   };
 
   const handlePageChange = (newPage) => {

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import customerService from '../services/customerService';
 import CustomerTable from '../components/customer/CustomerTable';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
-
+import { toast } from "react-toastify";
 const CustomersPage = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,15 +35,22 @@ const CustomersPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this customer?')) return;
+  if (!window.confirm("Are you sure you want to delete this customer?")) return;
 
-    try {
-      await customerService.deleteCustomer(id);
-      fetchCustomers();
-    } catch (err) {
-      alert('Failed to delete customer');
-    }
-  };
+  try {
+    await customerService.deleteCustomer(id);
+
+    setCustomers(prev =>
+  prev.filter(customer => customer._id !== id)
+);
+
+    toast.success("Customer deleted successfully!");
+  } catch (err) {
+    toast.error(
+      err.response?.data?.message || "Failed to delete customer."
+    );
+  }
+};
 
   const filteredCustomers = customers.filter(customer =>
     customer.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||

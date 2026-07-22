@@ -1,6 +1,6 @@
 // src/components/invoices/InvoiceForm.jsx
 import React, { useState, useEffect } from 'react';
-
+import { toast } from 'react-toastify';
 const InvoiceForm = ({
   repairJobs = [],
   inventoryItems = [],
@@ -286,7 +286,6 @@ const InvoiceForm = ({
             className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 text-white transition-all duration-200 appearance-none disabled:opacity-50"
           >
             <option value="Pending" className="bg-slate-800">Pending</option>
-            <option value="Partial" className="bg-slate-800">Partial</option>
             <option value="Paid" className="bg-slate-800">Paid</option>
           </select>
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">

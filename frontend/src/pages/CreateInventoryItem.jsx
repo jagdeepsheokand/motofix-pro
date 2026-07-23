@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import inventoryService from '../services/inventoryService';
-import InventoryForm from '../components/inventory/InventoryForm';
+import InventoryForm from '../components/inventory/inventoryForm';
 import { ErrorMessage } from '../components/common';
 
 const CreateInventoryItem = () => {

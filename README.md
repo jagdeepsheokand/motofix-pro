@@ -105,36 +105,6 @@ MotoFix Pro is a **full-stack Garage Management System** built with the **MERN S
 
 ---
 
-# 💻 Frontend Features
-
-- Responsive Dashboard
-- Mobile-Friendly Layout
-- Sidebar Navigation
-- Protected Routes
-- Reusable Components
-- Search & Pagination
-- Loading Indicators
-- Error Handling
-- Form Validation
-- Clean UI Design
-
----
-
-# 🌟 Highlights
-
-- Full MERN Stack Application
-- RESTful API Architecture
-- JWT Authentication
-- Secure HttpOnly Cookies
-- MongoDB Aggregation Pipelines
-- Automatic Invoice Number Generation
-- Inventory Auto Stock Management
-- Dashboard Analytics
-- Responsive Design
-- Component-Based React Architecture
-
----
-
 # 🛠 Tech Stack
 
 ## Frontend
@@ -286,117 +256,7 @@ http://localhost:5173
 
 ---
 
-# 📡 REST API
-
-## Authentication
-
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/auth/register` |
-| POST | `/api/auth/login` |
-| POST | `/api/auth/logout` |
-| GET | `/api/auth/profile` |
-
----
-
-## Customers
-
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/customers` |
-| GET | `/api/customers` |
-| GET | `/api/customers/:id` |
-| PUT | `/api/customers/:id` |
-| DELETE | `/api/customers/:id` |
-
----
-
-## Vehicles
-
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/vehicles` |
-| GET | `/api/vehicles` |
-| GET | `/api/vehicles/:id` |
-| PUT | `/api/vehicles/:id` |
-| DELETE | `/api/vehicles/:id` |
-
----
-
-## Repair Jobs
-
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/repair-jobs` |
-| GET | `/api/repair-jobs` |
-| GET | `/api/repair-jobs/:id` |
-| PUT | `/api/repair-jobs/:id` |
-| DELETE | `/api/repair-jobs/:id` |
-
----
-
-## Inventory
-
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/inventory` |
-| GET | `/api/inventory` |
-| GET | `/api/inventory/:id` |
-| PUT | `/api/inventory/:id` |
-| DELETE | `/api/inventory/:id` |
-| PATCH | `/api/inventory/:id/stock` |
-
----
-
-## Invoices
-
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/invoices` |
-| GET | `/api/invoices` |
-| GET | `/api/invoices/:id` |
-| PUT | `/api/invoices/:id` |
-| DELETE | `/api/invoices/:id` |
-
----
-
-## Dashboard
-
-| Method | Endpoint |
-|---------|----------|
-| GET | `/api/dashboard` |
-
----
-
 # 📈 Project Status
-
-## ✅ Backend
-
-- Authentication
-- Customer Management
-- Vehicle Management
-- Repair Job Management
-- Inventory Management
-- Invoice System
-- Dashboard Analytics
-
----
-
-## ✅ Frontend
-
-- Authentication
-- Dashboard
-- Customer Management
-- Vehicle Management
-- Repair Job Management
-- Inventory Management
-- Invoice Management
-- Responsive Layout
-- Protected Routes
-- Search & Pagination
-- Form Validation
-
----
 
 # 📸 Screenshots
 
@@ -433,28 +293,13 @@ http://localhost:5173
 
 # 🚀 Future Enhancements
 
-- Role-Based Access Control (Admin / Mechanic)
-- PDF Invoice Generation
-- Email Invoice Delivery
-- SMS Notifications
-- Appointment Scheduling
-- Image Uploads
-- Service History
-- Customer Portal
-- Dark Mode
-- Progressive Web App (PWA)
-- Advanced Reports & Analytics
-- Real-time Notifications (Socket.IO)
+- PDF invoice export
+- Email notifications
+- Role-based authentication
+- Appointment scheduling
 
 ---
 
-# 🌐 Deployment
-
-Frontend: Coming Soon
-
-Backend API: Coming Soon
-
----
 
 # 👨‍💻 Author
 

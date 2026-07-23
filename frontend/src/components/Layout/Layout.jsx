@@ -82,11 +82,12 @@ const Layout = () => {
 
         {/* Main Content Area */}
         <main
-          className={`main-content flex-1 min-h-[calc(100vh-72px)] transition-all duration-300
-            ${!isMobile ? 'md:ml-[280px]' : ''} p-4 md:p-6 lg:p-8`}
+          className={`flex-1 min-w-0
+    ${!isMobile ? 'md:ml-[280px]' : ''}
+    p-4 md:p-6 lg:p-8`}
         >
           <div className="max-w-7xl mx-auto">
-            <div className="animate-slideUp">
+            <div >
               <Outlet />
             </div>
           </div>

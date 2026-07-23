@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { LoadingSpinner } from "../components/common";
 import { toast } from "react-toastify";
-
+import logo from "../assets/logomp-Photoroom.png";
 const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -97,11 +97,11 @@ const Register = () => {
         <div className="flex flex-col items-center mb-12 group">
           <div className="relative">
             <div className="absolute inset-0 bg-orange-500/20 blur-2xl rounded-full scale-150 group-hover:scale-200 transition-all duration-700"></div>
-            <img
-              src="src/assets/logomp-Photoroom.png"
-              alt="MotoFix Pro Logo"
-              className="w-44 h-auto mb-4 relative z-10 drop-shadow-2xl hover:scale-105 transition-transform duration-300"
-            />
+         <img
+  src={logo}
+  alt="MotoFix Pro Logo"
+  className="w-44 h-auto mb-4 relative z-10 drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+/>
           </div>
           
           <div className="text-center">

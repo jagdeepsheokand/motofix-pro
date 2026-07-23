@@ -100,7 +100,7 @@ const Vehicles = () => {
       </div>
 
       {/* Quick Stats Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
         <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 hover:border-orange-500/30 transition-all duration-300">
           <p className="text-xs text-zinc-500 uppercase tracking-wider">Total</p>
           <p className="text-2xl font-bold text-white">{totalVehicles}</p>

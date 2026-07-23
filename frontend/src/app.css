@@ -8,6 +8,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
 
 :root {
   /* Colors */

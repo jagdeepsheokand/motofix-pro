@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const{createVehicle, getVehicles, getVehicle, updateVehicle, deleteVehicle}= require('../Controllers/vehicle.controller');
+const{createVehicle, getVehicles, getVehicle, updateVehicle, deleteVehicle}= require('../controllers/vehicle.controller');
 const {protect}= require('../middlewares/auth.middleware');
 router.use(protect);
 

@@ -13,8 +13,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173',   // Vite default port
-    credentials: true
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 }));
 
 app.use("/api/auth",authRoutes);

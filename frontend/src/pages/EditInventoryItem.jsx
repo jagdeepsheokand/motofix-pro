@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import inventoryService from '../services/inventoryService';
-import InventoryForm from '../components/inventory/InventoryForm';
+import InventoryForm from '../components/inventory/inventoryForm';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
 import { toast } from 'react-toastify';
 const EditInventoryItem = () => {
